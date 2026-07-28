@@ -605,8 +605,7 @@ function calculateResult() {
 function init() {
     renderDockApps();
     renderCalendar();
-    // Weather JS disabled for showcase by default. Set `WEATHER_ENABLED = true` to re-enable.
-    // initWeather();
+    initWeather();
     bindWindowControls();
     populateSidebar();
     setNotesContent(0);
