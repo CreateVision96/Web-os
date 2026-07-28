@@ -1,0 +1,622 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    /* Theme controls */
+    --system-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono-font: "SF Mono", "Courier New", Courier, monospace;
+    --bg-image: url("images/bgimage.jpg");
+    --app-accent: #0a84ff;
+    --app-accent-strong: #399cff;
+    --window-glass: rgba(255, 255, 255, 0.62);
+    --dock-glass: rgba(255, 255, 255, 0.16);
+    --text-main: #1c1c1e;
+    --text-soft: #333333;
+    --shadow-window: 0 18px 28px rgba(0, 0, 0, 0.18), 0 1px 6px rgba(0, 0, 0, 0.08);
+    --radius-lg: 14px;
+}
+
+body {
+    user-select: none;
+    overflow: hidden;
+    margin: 0;
+    height: 100vh;
+    font-family: var(--system-font);
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* ---------- Shell / layout ---------- */
+.desktop-shell {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* ---------- Menu Bar ---------- */
+.menubar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 38px;
+    background-color: rgba(20, 20, 20, 0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 9999;
+    font-size: 0.88rem;
+}
+
+.menubar-left {
+    display: flex;
+    align-items: center;
+}
+
+.pill {
+    background-color: rgba(255, 255, 255, 0.14);
+    padding: 4px 11px;
+    border-radius: 10px;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    line-height: 1;
+}
+
+.pill-brand {
+    cursor: default;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    transition: background 0.15s ease;
+}
+
+.pill-brand:hover {
+    background-color: rgba(255, 255, 255, 0.24);
+}
+
+.menubar-status {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+.menubar-clock {
+    font-variant-numeric: tabular-nums;
+    min-width: unset;
+    width: fit-content;
+    padding: 4px 10px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 1;
+}
+
+/* ---------- Desktop Widgets ---------- */
+/* --- Calendar --- */
+.desktop-widgets {
+    position: fixed;
+    top: 56px;
+    right: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 5;
+}
+
+.widget {
+    width: 280px;
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.widget-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.widget-month {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.widget-year {
+    opacity: 0.7;
+    font-size: 13px;
+}
+
+.widget-today {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--app-accent);
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.calendar-weekdays,
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.calendar-weekdays {
+    margin-bottom: 8px;
+    font-size: 12px;
+    opacity: 0.65;
+    text-align: center;
+}
+
+.calendar-day {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.calendar-day.today {
+    background: var(--app-accent);
+    color: white;
+    font-weight: 700;
+    border-radius: 10px;
+}
+
+.calendar-day.empty {
+    opacity: 0;
+}
+
+/* --- Weather --- */
+.widget-weather{
+    text-align: center;
+}
+
+.weather-icon{
+    font-size: 54px;
+    margin-bottom: 8px;
+}
+
+.weather-temp{
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.weather-condition{
+    margin-top: 8px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.weather-location{
+    font-size: 13px;
+    opacity: .75;
+    margin-top: 2px;
+}
+
+.weather-divider{
+    width: 100%;
+    height: 1px;
+    background: rgba(255,255,255,0.2);
+    margin: 14px 0;
+}
+
+.weather-info{
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    opacity: .85;
+}
+
+/* ---------- Window Base ---------- */
+.window {
+    position: absolute;
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: var(--radius-lg);
+    background-color: var(--window-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-window);
+    overflow: hidden;
+    resize: both;
+    min-width: 200px;
+    min-height: 150px;
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform-origin: center center;
+    z-index: 10;
+}
+
+.window.is-open {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+.window.is-closing {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+}
+
+.window.maximized {
+    top: 48px !important;
+    left: 16px !important;
+    right: 16px;
+    bottom: 96px;
+    width: calc(100% - 32px) !important;
+    height: calc(100% - 144px) !important;
+    transition: none;
+}
+
+.windowheader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    cursor: default;
+    user-select: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.window-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.control-button {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+    display: inline-block;
+    cursor: default;
+    transition: transform 0.1s ease, filter 0.1s ease;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.control-button:hover {
+    transform: scale(1.15);
+    filter: brightness(1.1);
+}
+
+.control-button.close {
+    background: #ff5f57;
+}
+
+.control-button.minimize {
+    background: #febc2e;
+}
+
+.control-button.zoom {
+    background: #28c840;
+}
+
+.window-title {
+    flex: 1;
+    text-align: center;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-right: 44px;
+}
+
+/* ---------- Notes App ---------- */
+.window-notes {
+    width: 520px;
+    min-width: 400px;
+    min-height: 300px;
+}
+
+.notes-body {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    gap: 12px;
+    height: calc(100% - 40px);
+    color: var(--text-soft);
+}
+
+.notes-sidebar {
+    width: 150px;
+    background: #f2f2f4;
+    border-radius: 12px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.new-note-btn {
+    padding: 7px;
+    background: var(--app-accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    font-family: var(--system-font);
+    transition: background 0.15s ease;
+}
+
+.new-note-btn:hover {
+    background: var(--app-accent-strong);
+}
+
+.sidebar-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.sidebar-item {
+    padding: 8px;
+    margin-bottom: 6px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid #e0e0e0;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.sidebar-item:hover {
+    background-color: #e7f1fd;
+    border-color: var(--app-accent);
+}
+
+.sidebar-item.active-note {
+    background-color: var(--app-accent);
+    border-color: var(--app-accent);
+}
+
+.sidebar-item.active-note strong,
+.sidebar-item.active-note small {
+    color: #ffffff;
+}
+
+.sidebar-item strong {
+    font-size: 0.85rem;
+}
+
+.sidebar-item small {
+    color: #888888;
+}
+
+.notes-editor {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.notes-editor-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.note-title-input {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 6px 8px;
+    border: 1px solid #d8d8d8;
+    border-radius: 10px;
+    font-family: var(--system-font);
+}
+
+.delete-note-btn {
+    background: none;
+    border: 1px solid #d8d8d8;
+    border-radius: 10px;
+    padding: 6px 9px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.15s ease;
+}
+
+.delete-note-btn:hover {
+    background: #ffecec;
+    border-color: #ff5f57;
+}
+
+.note-content-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+    resize: none;
+    font-family: var(--system-font);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* ---------- Calculator ---------- */
+.window-calc {
+    width: 260px;
+    min-width: 230px;
+    min-height: 380px;
+}
+
+.calc-body {
+    background: #1c1c1e;
+    padding: 12px;
+    border-radius: 12px;
+    height: calc(100% - 40px);
+    display: flex;
+    flex-direction: column;
+}
+
+.calc-display {
+    width: 100%;
+    height: 60px;
+    font-size: 30px;
+    text-align: right;
+    padding-right: 10px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: none;
+    background: #2c2c2e;
+    color: #ffffff;
+    font-family: var(--mono-font);
+}
+
+.calc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    flex: 1;
+}
+
+.calc-btn {
+    background: #3a3a3c;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 0;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: var(--system-font);
+    cursor: pointer;
+    transition: background 0.1s ease, transform 0.05s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calc-btn:hover {
+    background: #4a4a4c;
+}
+
+.calc-btn:active {
+    background: #5a5a5c;
+    transform: scale(0.96);
+}
+
+.calc-btn-func {
+    background: #737373;
+    color: #ffffff;
+}
+
+.calc-btn-func:hover {
+    background: #8b8b8b;
+}
+
+.calc-btn-op {
+    background: var(--app-accent);
+}
+
+.calc-btn-op:hover {
+    background: var(--app-accent-strong);
+}
+
+.calc-btn-equals {
+    background: var(--app-accent);
+}
+
+.calc-btn-equals:hover {
+    background: var(--app-accent-strong);
+}
+
+.calc-btn-zero {
+    grid-column: span 2;
+    text-align: center;
+    padding-left: 0;
+}
+
+/* ---------- Welcome Window ---------- */
+.window-welcome {
+    width: 300px;
+    text-align: center;
+}
+
+.welcome-body {
+    padding: 4px 8px 8px;
+}
+
+.welcome-avatar {
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.welcome-title {
+    margin: 10px 0 6px;
+    font-size: 1.4rem;
+    color: var(--text-main);
+}
+
+.welcome-text {
+    color: var(--text-soft);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+/* ---------- Dock ---------- */
+.dock {
+    position: fixed;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    padding: 10px 16px;
+    background: var(--dock-glass);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 22px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    z-index: 9998;
+}
+
+.dock-item {
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.dock-item:hover {
+    transform: translateY(-8px) scale(1.12);
+}
+
+.dock-icon-image {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}

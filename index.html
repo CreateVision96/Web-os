@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MentOS</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+    <!-- overall desktop layout -->
+    <div class="desktop-shell">
+        <!-- Menu Bar -->
+        <div class="menubar">
+            <div class="menubar-left">
+                <p id="welcomeopen" class="pill pill-brand">MentOS</p>
+            </div>
+
+            <p class="pill menubar-status">🦋 Learning New things 🌸</p>
+            <p id="timeeElement" class="pill menubar-clock"></p>
+        </div>
+
+        <!-- Desktop widgets area -->
+         <!-- Calendar -->
+        <div class="desktop-widgets" aria-label="Desktop widgets">
+            <section class="widget widget-calendar">
+                <div class="widget-header">
+                    <div class="widget-title-group">
+                        <div class="widget-month" id="calendarMonth">July</div>
+                        <div class="widget-year" id="calendarYear">2026</div>
+                    </div>
+                    <div class="widget-today" id="calendarToday">28</div>
+                </div>
+
+                <div class="calendar-weekdays">
+                    <span>S</span>
+                    <span>M</span>
+                    <span>T</span>
+                    <span>W</span>
+                    <span>T</span>
+                    <span>F</span>
+                    <span>S</span>
+                </div>
+                <div id="calendarGrid" class="calendar-grid"></div>
+            </section>
+        </div>
+        <!-- Weather -->
+         <section class="widget widget-weather">
+             <div class="weather-icon">☀️</div>
+              <div class="weather-temp">29°</div>
+                <div class="weather-condition">Sunny</div>
+                 <div class="weather-location">Calicut</div>
+                  <div class="weather-divider"></div>
+                   <div class="weather-info">
+                    <div>Feels 31°</div>
+                     <div>Humidity 78%</div>
+              </div>
+         </section>
+
+
+
+        <!-- Built-in app windows -->
+        <!-- App section: Notes -->
+        <section id="notes" class="window window-notes" style="display: none; top: calc(50% - 160px); left: calc(50% - 250px);" data-app="notes">
+            <div id="notesheader" class="windowheader">
+                <div class="window-controls">
+                    <span id="notesclose" class="control-button close"></span>
+                    <span class="control-button minimize"></span>
+                    <span class="control-button zoom"></span>
+                </div>
+                <div class="window-title">Notes</div>
+            </div>
+
+            <div class="notes-body">
+                <div class="notes-sidebar">
+                    <button class="new-note-btn" onclick="addNewNote()">+ New Note</button>
+                    <div id="sidebar" class="sidebar-list"></div>
+                </div>
+
+                <div class="notes-editor">
+                    <div class="notes-editor-row">
+                        <input id="noteTitleInput" type="text" oninput="updateActiveNoteTitle(this.value)"
+                            placeholder="Note Title" class="note-title-input" />
+                        <button id="deleteNoteBtn" class="delete-note-btn" onclick="deleteActiveNote()" title="Delete note">🗑</button>
+                    </div>
+                    <textarea id="noteContentInput" oninput="updateActiveNoteContent(this.value)"
+                        placeholder="Start typing..." class="note-content-input"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- App section: Calculator -->
+        <section id="calculator" class="window window-calc" style="display: none; top: calc(50% - 200px); left: calc(50% - 120px);" data-app="calculator">
+            <div id="calculatorheader" class="windowheader">
+                <div class="window-controls">
+                    <span id="calcclose" class="control-button close"></span>
+                    <span class="control-button minimize"></span>
+                    <span class="control-button zoom"></span>
+                </div>
+                <div class="window-title">Calculator</div>
+            </div>
+
+            <div class="calc-body">
+                <input id="calcDisplay" type="text" value="0" readonly class="calc-display" />
+
+                <div class="calc-grid">
+                    <button class="calc-btn calc-btn-func" onclick="clearCalc()">AC</button>
+                    <button class="calc-btn calc-btn-func" onclick="backspaceCalc()">⌫</button>
+                    <button class="calc-btn calc-btn-func" onclick="percentCalc()">%</button>
+                    <button class="calc-btn calc-btn-op" onclick="pressCalc('/')">÷</button>
+
+                    <button class="calc-btn" onclick="pressCalc('7')">7</button>
+                    <button class="calc-btn" onclick="pressCalc('8')">8</button>
+                    <button class="calc-btn" onclick="pressCalc('9')">9</button>
+                    <button class="calc-btn calc-btn-op" onclick="pressCalc('*')">×</button>
+
+                    <button class="calc-btn" onclick="pressCalc('4')">4</button>
+                    <button class="calc-btn" onclick="pressCalc('5')">5</button>
+                    <button class="calc-btn" onclick="pressCalc('6')">6</button>
+                    <button class="calc-btn calc-btn-op" onclick="pressCalc('-')">−</button>
+
+                    <button class="calc-btn" onclick="pressCalc('1')">1</button>
+                    <button class="calc-btn" onclick="pressCalc('2')">2</button>
+                    <button class="calc-btn" onclick="pressCalc('3')">3</button>
+                    <button class="calc-btn calc-btn-op" onclick="pressCalc('+')">+</button>
+
+                    <button class="calc-btn calc-btn-zero" onclick="pressCalc('0')">0</button>
+                    <button class="calc-btn" onclick="pressCalc('.')">.</button>
+                    <button class="calc-btn calc-btn-equals" onclick="calculateResult()">=</button>
+                </div>
+            </div>
+        </section>
+
+        <div id="welcome" class="window window-welcome" style="display: none; top: calc(50% - 130px); left: calc(50% - 150px);">
+            <div id="welcomeheader" class="windowheader">
+                <div class="window-controls">
+                    <span id="welcomeclose" class="control-button close"></span>
+                    <span class="control-button minimize"></span>
+                    <span class="control-button zoom"></span>
+                </div>
+                <div class="window-title">MentOS</div>
+            </div>
+
+            <div class="welcome-body">
+                <img src="images/rukia.jpg" width="84" height="84" class="welcome-avatar" alt="MentOS mascot">
+                <h1 class="welcome-title">MentOS</h1>
+                <p class="welcome-text">
+                    <dfn>MentOS</dfn> is a feature-limited
+                    <abbr title="Operating System">OS</abbr>
+                    to answer the<br>
+                    unanswerable question of
+                    <code>"Who's Ment?"</code>
+                </p>
+            </div>
+        </div>
+
+        <!-- Dock for quick app access -->
+        <div id="dock" class="dock" aria-label="Dock"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
