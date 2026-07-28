@@ -168,6 +168,7 @@ function weatherDescription(code){
 }
 
 async function loadWeather(latitude, longitude) {
+    if (typeof WEATHER_ENABLED !== 'undefined' && !WEATHER_ENABLED) return;
     const locationElement = document.getElementById("weatherLocation");
     const tempElement = document.getElementById("weatherTemp");
     const conditionElement = document.getElementById("weatherCondition");
@@ -205,6 +206,9 @@ async function loadWeather(latitude, longitude) {
             maxTemp !== undefined && minTemp !== undefined
                 ? `H:${Math.round(maxTemp)}°  L:${Math.round(minTemp)}°`
                 : "H:--° L:--°";
+
+                // Toggle to enable weather JS when needed for live data
+                const WEATHER_ENABLED = false;
     } catch (error) {
         console.error(error);
         if (locationElement) locationElement.textContent = "Weather unavailable";
@@ -216,6 +220,8 @@ async function loadWeather(latitude, longitude) {
 
 function updateWeatherClock(){
 
+    if (typeof WEATHER_ENABLED !== 'undefined' && !WEATHER_ENABLED) return;
+
     document.getElementById("weatherTime").textContent =
         new Date().toLocaleTimeString([],{
 
@@ -226,6 +232,7 @@ function updateWeatherClock(){
 }
 
 function initWeather() {
+    if (typeof WEATHER_ENABLED !== 'undefined' && !WEATHER_ENABLED) return;
     const locationElement = document.getElementById("weatherLocation");
     const tempElement = document.getElementById("weatherTemp");
     const conditionElement = document.getElementById("weatherCondition");
@@ -598,7 +605,8 @@ function calculateResult() {
 function init() {
     renderDockApps();
     renderCalendar();
-    initWeather(); 
+    // Weather JS disabled for showcase by default. Set `WEATHER_ENABLED = true` to re-enable.
+    // initWeather();
     bindWindowControls();
     populateSidebar();
     setNotesContent(0);
