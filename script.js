@@ -1,6 +1,6 @@
 /* -----------------------------
    Theme controls
-   Edit these values to change the overall look and vibe.
+   
 ----------------------------- */
 const theme = {
     accent: "#0a84ff",
@@ -26,7 +26,7 @@ applyTheme();
 
 /* -----------------------------
    App registry
-   EASY EXTENSION POINT: add more apps by pushing a new object here.
+   
 ----------------------------- */
 const appRegistry = [
     {
@@ -115,6 +115,154 @@ function renderCalendar() {
         dayElement.textContent = String(day);
         grid.appendChild(dayElement);
     }
+}
+
+/* -----------------------------
+   Weather Widget
+----------------------------- */
+
+function weatherDescription(code){
+
+    const map = {
+
+        0:"Clear",
+
+        1:"Mainly Clear",
+
+        2:"Partly Cloudy",
+
+        3:"Cloudy",
+
+        45:"Fog",
+
+        48:"Fog",
+
+        51:"Light Drizzle",
+
+        53:"Drizzle",
+
+        55:"Heavy Drizzle",
+
+        61:"Rain",
+
+        63:"Rain",
+
+        65:"Heavy Rain",
+
+        71:"Snow",
+
+        73:"Snow",
+
+        75:"Heavy Snow",
+
+        95:"Thunderstorm",
+
+        96:"Thunderstorm",
+
+        99:"Thunderstorm"
+
+    };
+
+    return map[code] || "Unknown";
+
+}
+
+async function loadWeather(latitude, longitude) {
+    const locationElement = document.getElementById("weatherLocation");
+    const tempElement = document.getElementById("weatherTemp");
+    const conditionElement = document.getElementById("weatherCondition");
+    const highLowElement = document.getElementById("weatherHighLow");
+
+    if (!locationElement || !tempElement || !conditionElement || !highLowElement) return;
+
+    try {
+        const weatherResponse = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=auto`
+        );
+        const weather = await weatherResponse.json();
+
+        let city = "";
+
+        try {
+            const geoResponse = await fetch(
+                `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+            );
+            const place = await geoResponse.json();
+            city = place.city || place.locality || place.principalSubdivision || place.countryName || "";
+        } catch (geoError) {
+            console.warn("Reverse geocoding failed, leaving city empty.", geoError);
+        }
+
+        const currentTemp = weather.current?.temperature_2m;
+        const weatherCode = weather.current?.weather_code;
+        const maxTemp = weather.daily?.temperature_2m_max?.[0];
+        const minTemp = weather.daily?.temperature_2m_min?.[0];
+
+        locationElement.textContent = city || "Unknown location";
+        tempElement.textContent = currentTemp !== undefined ? `${Math.round(currentTemp)}°` : "--°";
+        conditionElement.textContent = weatherCode !== undefined ? weatherDescription(weatherCode) : "Weather unavailable";
+        highLowElement.textContent =
+            maxTemp !== undefined && minTemp !== undefined
+                ? `H:${Math.round(maxTemp)}°  L:${Math.round(minTemp)}°`
+                : "H:--° L:--°";
+    } catch (error) {
+        console.error(error);
+        if (locationElement) locationElement.textContent = "Weather unavailable";
+        if (tempElement) tempElement.textContent = "--°";
+        if (conditionElement) conditionElement.textContent = "Unable to load weather";
+        if (highLowElement) highLowElement.textContent = "H:--° L:--°";
+    }
+}
+
+function updateWeatherClock(){
+
+    document.getElementById("weatherTime").textContent =
+        new Date().toLocaleTimeString([],{
+
+            hour:"numeric",
+            minute:"2-digit"
+        });
+
+}
+
+function initWeather() {
+    const locationElement = document.getElementById("weatherLocation");
+    const tempElement = document.getElementById("weatherTemp");
+    const conditionElement = document.getElementById("weatherCondition");
+    const highLowElement = document.getElementById("weatherHighLow");
+
+    if (!locationElement || !tempElement || !conditionElement || !highLowElement) return;
+
+    // Indicate that we are attempting to resolve the user's city
+    locationElement.textContent = "Locating…";
+
+    if (!navigator.geolocation) {
+        locationElement.textContent = "Location Unsupported";
+        tempElement.textContent = "--°";
+        conditionElement.textContent = "Weather unavailable";
+        highLowElement.textContent = "H:--° L:--°";
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            loadWeather(lat, lon);
+            updateWeatherClock();
+            setInterval(updateWeatherClock, 1000);
+            setInterval(function () {
+                loadWeather(lat, lon);
+            }, 600000);
+        },
+        function () {
+            locationElement.textContent = "Location Denied";
+            tempElement.textContent = "--°";
+            conditionElement.textContent = "Weather unavailable";
+            highLowElement.textContent = "H:--° L:--°";
+        }
+    );
 }
 /* -----------------------------
    Clock functionality
@@ -450,6 +598,7 @@ function calculateResult() {
 function init() {
     renderDockApps();
     renderCalendar();
+    initWeather(); 
     bindWindowControls();
     populateSidebar();
     setNotesContent(0);

@@ -21,8 +21,8 @@
         </div>
 
         <!-- Desktop widgets area -->
-         <!-- Calendar -->
         <div class="desktop-widgets" aria-label="Desktop widgets">
+            <!-- Calendar -->
             <section class="widget widget-calendar">
                 <div class="widget-header">
                     <div class="widget-title-group">
@@ -43,19 +43,41 @@
                 </div>
                 <div id="calendarGrid" class="calendar-grid"></div>
             </section>
-        </div>
+        
         <!-- Weather -->
-         <section class="widget widget-weather">
-             <div class="weather-icon">☀️</div>
-              <div class="weather-temp">29°</div>
-                <div class="weather-condition">Sunny</div>
-                 <div class="weather-location">Calicut</div>
-                  <div class="weather-divider"></div>
-                   <div class="weather-info">
-                    <div>Feels 31°</div>
-                     <div>Humidity 78%</div>
-              </div>
-         </section>
+         <!-- ===== Weather Widget ===== -->
+<section class="widget widget-weather">
+
+    <img
+        src="images/widget/weatherbg.jpg"
+        class="weather-bg"
+        alt="Weather Background">
+    <div class="weather-content">
+        <div class="weather-header">
+            <div>
+                <div id="weatherLocation" class="weather-location">
+                    Loading...
+                </div>
+                <div id="weatherTime" class="weather-time">
+                    --:--
+                </div>
+            </div>
+            <div id="weatherTemp" class="weather-temp">
+                --°
+            </div>
+        </div>
+        <div class="weather-footer">
+            <div id="weatherCondition" class="weather-condition">
+                Loading...
+            </div>
+            <div id="weatherHighLow" class="weather-highlow">
+                H:--° L:--°
+            </div>
+        </div>
+    </div>
+
+</section>
+         </div>
 
 
 
