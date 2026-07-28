@@ -167,6 +167,12 @@ function weatherDescription(code){
 
 }
 
+const DEFAULT_WEATHER_LOCATION = {
+    latitude: 35.682839,
+    longitude: 139.759455,
+    name: "Tokyo, JP"
+};
+
 async function loadWeather(latitude, longitude) {
     if (typeof WEATHER_ENABLED !== 'undefined' && !WEATHER_ENABLED) return;
     const locationElement = document.getElementById("weatherLocation");
@@ -178,7 +184,7 @@ async function loadWeather(latitude, longitude) {
 
     try {
         const weatherResponse = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=auto`
+            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=auto`
         );
         const weather = await weatherResponse.json();
 
@@ -194,21 +200,19 @@ async function loadWeather(latitude, longitude) {
             console.warn("Reverse geocoding failed, leaving city empty.", geoError);
         }
 
-        const currentTemp = weather.current?.temperature_2m;
-        const weatherCode = weather.current?.weather_code;
+        const currentTemp = weather.current_weather?.temperature;
+        const weatherCode = weather.current_weather?.weathercode;
         const maxTemp = weather.daily?.temperature_2m_max?.[0];
         const minTemp = weather.daily?.temperature_2m_min?.[0];
+        const locationName = city || DEFAULT_WEATHER_LOCATION.name;
 
-        locationElement.textContent = city || "Unknown location";
+        locationElement.textContent = locationName;
         tempElement.textContent = currentTemp !== undefined ? `${Math.round(currentTemp)}°` : "--°";
         conditionElement.textContent = weatherCode !== undefined ? weatherDescription(weatherCode) : "Weather unavailable";
         highLowElement.textContent =
             maxTemp !== undefined && minTemp !== undefined
                 ? `H:${Math.round(maxTemp)}°  L:${Math.round(minTemp)}°`
                 : "H:--° L:--°";
-
-                // Toggle to enable weather JS when needed for live data
-                const WEATHER_ENABLED = false;
     } catch (error) {
         console.error(error);
         if (locationElement) locationElement.textContent = "Weather unavailable";
@@ -244,10 +248,10 @@ function initWeather() {
     locationElement.textContent = "Locating…";
 
     if (!navigator.geolocation) {
-        locationElement.textContent = "Location Unsupported";
-        tempElement.textContent = "--°";
-        conditionElement.textContent = "Weather unavailable";
-        highLowElement.textContent = "H:--° L:--°";
+        locationElement.textContent = DEFAULT_WEATHER_LOCATION.name;
+        loadWeather(DEFAULT_WEATHER_LOCATION.latitude, DEFAULT_WEATHER_LOCATION.longitude);
+        updateWeatherClock();
+        setInterval(updateWeatherClock, 1000);
         return;
     }
 
@@ -264,10 +268,10 @@ function initWeather() {
             }, 600000);
         },
         function () {
-            locationElement.textContent = "Location Denied";
-            tempElement.textContent = "--°";
-            conditionElement.textContent = "Weather unavailable";
-            highLowElement.textContent = "H:--° L:--°";
+            locationElement.textContent = DEFAULT_WEATHER_LOCATION.name;
+            loadWeather(DEFAULT_WEATHER_LOCATION.latitude, DEFAULT_WEATHER_LOCATION.longitude);
+            updateWeatherClock();
+            setInterval(updateWeatherClock, 1000);
         }
     );
 }
