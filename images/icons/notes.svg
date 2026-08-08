@@ -1,0 +1,28 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- soft shadow -->
+  <rect x="13" y="16" width="40" height="41" rx="7" fill="#3D354B" opacity="0.08"/>
+
+  <!-- pages -->
+  <rect x="12" y="14" width="40" height="41" rx="7" fill="#FFFCF7" stroke="#3D354B" stroke-width="3"/>
+
+  <!-- cover band (top flap) -->
+  <rect x="9" y="7" width="46" height="15" rx="7" fill="#FF93B2" stroke="#3D354B" stroke-width="3"/>
+
+  <!-- spiral rings -->
+  <circle cx="16" cy="14.5" r="2.6" fill="#FFFFFF" stroke="#3D354B" stroke-width="2"/>
+  <circle cx="25.6" cy="14.5" r="2.6" fill="#FFFFFF" stroke="#3D354B" stroke-width="2"/>
+  <circle cx="35.2" cy="14.5" r="2.6" fill="#FFFFFF" stroke="#3D354B" stroke-width="2"/>
+  <circle cx="44.8" cy="14.5" r="2.6" fill="#FFFFFF" stroke="#3D354B" stroke-width="2"/>
+
+  <!-- text lines -->
+  <line x1="19" y1="31" x2="41" y2="31" stroke="#9D97AA" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="19" y1="37" x2="41" y2="37" stroke="#9D97AA" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="19" y1="43" x2="33" y2="43" stroke="#9D97AA" stroke-width="2.4" stroke-linecap="round"/>
+
+  <!-- highlight -->
+  <path d="M12 20 Q12 14 18 14 H24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.35"/>
+
+  <!-- heart doodle -->
+  <path d="M42.5 51c-4-2.6-6-4.6-6-7.2 0-1.9 1.5-3.3 3.3-3.3 1.1 0 2.1.5 2.7 1.4.6-.9 1.6-1.4 2.7-1.4 1.8 0 3.3 1.4 3.3 3.3 0 2.6-2 4.6-6 7.2z"
+        fill="#FF93B2" stroke="#3D354B" stroke-width="2" stroke-linejoin="round"/>
+</svg>

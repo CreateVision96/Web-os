@@ -3,24 +3,21 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MentOS</title>
+    <title>Piko</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 
 <body>
-    <!-- overall desktop layout -->
     <div class="desktop-shell">
-        <!-- Menu Bar -->
         <div class="menubar">
             <div class="menubar-left">
-                <p id="welcomeopen" class="pill pill-brand">MentOS</p>
+                <p id="welcomeopen" class="pill pill-brand">Piko</p>
             </div>
 
             <p class="pill menubar-status">🦋 Learning New things 🌸</p>
             <p id="timeeElement" class="pill menubar-clock"></p>
         </div>
 
-        <!-- Desktop widgets area -->
         <div class="desktop-widgets" aria-label="Desktop widgets">
             <!-- Calendar -->
             <section class="widget widget-calendar">
@@ -44,8 +41,6 @@
                 <div id="calendarGrid" class="calendar-grid"></div>
             </section>
         
-        <!-- Weather -->
-         <!-- ===== Weather Widget ===== -->
 <section class="widget widget-weather">
 
     <img
@@ -56,10 +51,10 @@
         <div class="weather-header">
             <div>
                 <div id="weatherLocation" class="weather-location">
-                    Loading...
+                    Not available
                 </div>
                 <div id="weatherTime" class="weather-time">
-                    --:--
+                    Not available
                 </div>
             </div>
             <div id="weatherTemp" class="weather-temp">
@@ -68,21 +63,26 @@
         </div>
         <div class="weather-footer">
             <div id="weatherCondition" class="weather-condition">
-                Loading...
+                Not available
             </div>
             <div id="weatherHighLow" class="weather-highlow">
-                H:--° L:--°
+                N/A
             </div>
         </div>
     </div>
 
 </section>
+<section class="widget widget-todo" id="todoWidget">
+
+    <div class="todo-widget-header">
+        <span>Todo</span>
+    </div>
+    <div id="todoWidgetList" class="todo-widget-list"></div>
+</section>
          </div>
 
 
 
-        <!-- Built-in app windows -->
-        <!-- App section: Notes -->
         <section id="notes" class="window window-notes" style="display: none; top: calc(50% - 160px); left: calc(50% - 250px);" data-app="notes">
             <div id="notesheader" class="windowheader">
                 <div class="window-controls">
@@ -94,24 +94,23 @@
             </div>
 
             <div class="notes-body">
-                <div class="notes-sidebar">
-                    <button class="new-note-btn" onclick="addNewNote()">+ New Note</button>
+                <div class="panel notes-sidebar">
+                    <button class="button new-note-btn" onclick="addNewNote()">+ New Note</button>
                     <div id="sidebar" class="sidebar-list"></div>
                 </div>
 
                 <div class="notes-editor">
                     <div class="notes-editor-row">
                         <input id="noteTitleInput" type="text" oninput="updateActiveNoteTitle(this.value)"
-                            placeholder="Note Title" class="note-title-input" />
-                        <button id="deleteNoteBtn" class="delete-note-btn" onclick="deleteActiveNote()" title="Delete note">🗑</button>
+                            placeholder="Note Title" class="input note-title-input" />
+                        <button id="deleteNoteBtn" class="icon-button button-danger delete-note-btn" onclick="deleteActiveNote()" title="Delete note">🗑</button>
                     </div>
                     <textarea id="noteContentInput" oninput="updateActiveNoteContent(this.value)"
-                        placeholder="Start typing..." class="note-content-input"></textarea>
+                        placeholder="Start typing..." class="input textarea note-content-input"></textarea>
                 </div>
             </div>
         </section>
 
-        <!-- App section: Calculator -->
         <section id="calculator" class="window window-calc" style="display: none; top: calc(50% - 200px); left: calc(50% - 120px);" data-app="calculator">
             <div id="calculatorheader" class="windowheader">
                 <div class="window-controls">
@@ -123,35 +122,153 @@
             </div>
 
             <div class="calc-body">
-                <input id="calcDisplay" type="text" value="0" readonly class="calc-display" />
+                <input id="calcDisplay" type="text" value="0" readonly class="input calc-display" />
 
                 <div class="calc-grid">
-                    <button class="calc-btn calc-btn-func" onclick="clearCalc()">AC</button>
-                    <button class="calc-btn calc-btn-func" onclick="backspaceCalc()">⌫</button>
-                    <button class="calc-btn calc-btn-func" onclick="percentCalc()">%</button>
-                    <button class="calc-btn calc-btn-op" onclick="pressCalc('/')">÷</button>
+                    <button class="button calc-btn calc-btn-func" onclick="clearCalc()">AC</button>
+                    <button class="button calc-btn calc-btn-func" onclick="backspaceCalc()">⌫</button>
+                    <button class="button calc-btn calc-btn-func" onclick="percentCalc()">%</button>
+                    <button class="button calc-btn calc-btn-op" onclick="pressCalc('/')">÷</button>
 
-                    <button class="calc-btn" onclick="pressCalc('7')">7</button>
-                    <button class="calc-btn" onclick="pressCalc('8')">8</button>
-                    <button class="calc-btn" onclick="pressCalc('9')">9</button>
-                    <button class="calc-btn calc-btn-op" onclick="pressCalc('*')">×</button>
+                    <button class="button calc-btn" onclick="pressCalc('7')">7</button>
+                    <button class="button calc-btn" onclick="pressCalc('8')">8</button>
+                    <button class="button calc-btn" onclick="pressCalc('9')">9</button>
+                    <button class="button calc-btn calc-btn-op" onclick="pressCalc('*')">×</button>
 
-                    <button class="calc-btn" onclick="pressCalc('4')">4</button>
-                    <button class="calc-btn" onclick="pressCalc('5')">5</button>
-                    <button class="calc-btn" onclick="pressCalc('6')">6</button>
-                    <button class="calc-btn calc-btn-op" onclick="pressCalc('-')">−</button>
+                    <button class="button calc-btn" onclick="pressCalc('4')">4</button>
+                    <button class="button calc-btn" onclick="pressCalc('5')">5</button>
+                    <button class="button calc-btn" onclick="pressCalc('6')">6</button>
+                    <button class="button calc-btn calc-btn-op" onclick="pressCalc('-')">−</button>
 
-                    <button class="calc-btn" onclick="pressCalc('1')">1</button>
-                    <button class="calc-btn" onclick="pressCalc('2')">2</button>
-                    <button class="calc-btn" onclick="pressCalc('3')">3</button>
-                    <button class="calc-btn calc-btn-op" onclick="pressCalc('+')">+</button>
+                    <button class="button calc-btn" onclick="pressCalc('1')">1</button>
+                    <button class="button calc-btn" onclick="pressCalc('2')">2</button>
+                    <button class="button calc-btn" onclick="pressCalc('3')">3</button>
+                    <button class="button calc-btn calc-btn-op" onclick="pressCalc('+')">+</button>
 
-                    <button class="calc-btn calc-btn-zero" onclick="pressCalc('0')">0</button>
-                    <button class="calc-btn" onclick="pressCalc('.')">.</button>
-                    <button class="calc-btn calc-btn-equals" onclick="calculateResult()">=</button>
+                    <button class="button calc-btn calc-btn-zero" onclick="pressCalc('0')">0</button>
+                    <button class="button calc-btn" onclick="pressCalc('.')">.</button>
+                    <button class="button calc-btn calc-btn-equals" onclick="calculateResult()">=</button>
                 </div>
             </div>
         </section>
+
+        <section id="gallery" class="window window-gallery" style="display: none; top: calc(50% - 220px); left: calc(50% - 280px);" data-app="gallery">
+
+    <div id="galleryheader" class="windowheader">
+        <div class="window-controls">
+            <span id="galleryclose" class="control-button close"></span>
+            <span class="control-button minimize"></span>
+            <span class="control-button zoom"></span>
+        </div>
+
+        <div class="window-title">Gallery</div>
+    </div>
+
+    <div class="gallery-body">
+        <div id="galleryGrid" class="gallery-grid"></div>
+    </div>
+        </section>
+
+    <section id="settings" class="window window-settings" style="display:none; top:calc(50% - 180px); left:calc(50% - 240px);" data-app="settings">
+
+    <div id="settingsheader" class="windowheader">
+        <div class="window-controls">
+            <span id="settingsclose" class="control-button close"></span>
+            <span class="control-button minimize"></span>
+            <span class="control-button zoom"></span>
+        </div>
+
+        <div class="window-title">Settings</div>
+    </div>
+
+    <div class="panel settings-body">
+
+        <h2>Appearance</h2>
+
+        <div class="settings-group">
+            <div class="settings-label">Theme</div>
+            <div class="theme-options">
+                <button class="theme-option active" data-theme="default">
+                    <span class="theme-preview theme-preview-default"></span>
+                    <span>Default</span>
+                </button>
+
+                <button class="theme-option" data-theme="pink">
+                <span class="theme-preview theme-preview-pink"></span>
+                <span>Pink</span>
+                </button>
+
+                <button class="theme-option" data-theme="lavender">
+                    <span class="theme-preview theme-preview-lavender"></span>
+                    <span>Lavender</span>
+                </button>
+
+                <button class="theme-option" data-theme="mint">
+                    <span class="theme-preview theme-preview-mint"></span>
+                    <span>Mint</span>
+                </button>
+
+                <button class="theme-option" data-theme="sky">
+                    <span class="theme-preview theme-preview-sky"></span>
+                    <span>Sky</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section id="todo" class="window window-todo" style="display:none; top:calc(50% - 200px); left:calc(50% - 240px);" data-app="todo">
+
+    <div id="todoheader" class="windowheader">
+        <div class="window-controls">
+            <span id="todoclose" class="control-button close"></span>
+            <span class="control-button minimize"></span>
+            <span class="control-button zoom"></span>
+        </div>
+
+        <div class="window-title">To-do</div>
+    </div>
+
+    <div class="panel todo-body">
+
+        <div class="todo-input-row">
+            <input id="todoInput" type="text" placeholder="Add a task..." class="input">
+            <button class="button" onclick="addTodoTask()">Add</button>
+        </div>
+
+        <div id="todoList"></div>
+
+    </div>
+
+</section>
+
+<section id="about" class="window window-about" style="display:none; top:calc(50% - 180px); left:calc(50% - 240px);" data-app="about">
+
+    <div id="aboutheader" class="windowheader">
+        <div class="window-controls">
+            <span id="aboutclose" class="control-button close"></span>
+            <span class="control-button minimize"></span>
+            <span class="control-button zoom"></span>
+        </div>
+
+        <div class="window-title">About</div>
+    </div>
+
+    <div class="panel about-body">
+
+        <h2>Piko</h2>
+
+        <p>Version 1.0</p>
+
+        <p>Cozy</p>
+
+        <p>Created by Element</p>
+
+    </div>
+
+</section>
+
 
         <div id="welcome" class="window window-welcome" style="display: none; top: calc(50% - 130px); left: calc(50% - 150px);">
             <div id="welcomeheader" class="windowheader">
@@ -160,19 +277,28 @@
                     <span class="control-button minimize"></span>
                     <span class="control-button zoom"></span>
                 </div>
-                <div class="window-title">MentOS</div>
+                <div class="window-title">Piko</div>
             </div>
 
             <div class="welcome-body">
-                    <img src="images/Rukia.jpg" width="84" height="84" class="welcome-avatar" alt="MentOS mascot">
-                    <h1 class="welcome-title">MentOS</h1>
+                    <img src="images/Rukia.jpg" width="84" height="84" class="welcome-avatar" alt="Piko mascot">
+                    <h1 class="welcome-title">Piko</h1>
                     <p class="welcome-text">A tiny desktop<br>
                         built for the web<br>
                         made for learning</p>
                 </div>
         </div>
 
-        <!-- Dock for quick app access -->
+        <ul id="desktopContextMenu" role="menu">
+            <li data-action="refresh" role="menuitem">Refresh</li>
+            <li class="context-divider" role="separator"></li>
+            <li data-action="new-note" role="menuitem">New Note</li>
+            <li data-action="todo" role="menuitem">To-do</li>
+            <li class="context-divider" role="separator"></li>
+            <li data-action="settings" role="menuitem">Settings</li>
+            <li class="context-divider" role="separator"></li>
+            <li data-action="about" role="menuitem">About Piko</li>
+        </ul>
         <div id="dock" class="dock" aria-label="Dock"></div>
     </div>
 

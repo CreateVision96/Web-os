@@ -1,0 +1,29 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- soft shadow -->
+  <rect x="11" y="10" width="42" height="47" rx="9" fill="#3D354B" opacity="0.08"/>
+
+  <!-- body -->
+  <rect x="10" y="8" width="42" height="47" rx="9" fill="#F2E8DD" stroke="#3D354B" stroke-width="3"/>
+
+  <!-- display -->
+  <rect x="15" y="13" width="32" height="12" rx="4" fill="#A8FFA0" stroke="#3D354B" stroke-width="2.4"/>
+  <line x1="19" y1="21" x2="34" y2="21" stroke="#3D354B" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/>
+
+  <!-- button grid -->
+  <rect x="15" y="29" width="7" height="6.6" rx="2" fill="#FFFCF7" stroke="#3D354B" stroke-width="1.6"/>
+  <rect x="24.3" y="29" width="7" height="6.6" rx="2" fill="#FFFCF7" stroke="#3D354B" stroke-width="1.6"/>
+  <rect x="33.6" y="29" width="7" height="6.6" rx="2" fill="#FFFCF7" stroke="#3D354B" stroke-width="1.6"/>
+
+  <rect x="15" y="37.6" width="7" height="6.6" rx="2" fill="#FFFCF7" stroke="#3D354B" stroke-width="1.6"/>
+  <rect x="24.3" y="37.6" width="7" height="6.6" rx="2" fill="#FFFCF7" stroke="#3D354B" stroke-width="1.6"/>
+  <rect x="33.6" y="37.6" width="7" height="6.6" rx="2" fill="#FFFCF7" stroke="#3D354B" stroke-width="1.6"/>
+
+  <rect x="15" y="46.2" width="16.3" height="6.6" rx="2" fill="#FFFCF7" stroke="#3D354B" stroke-width="1.6"/>
+  <!-- equals -->
+  <rect x="33.6" y="29" width="7" height="23.8" rx="2" fill="#FFB97A" stroke="#3D354B" stroke-width="1.6"/>
+  <line x1="35.2" y1="39" x2="38.8" y2="39" stroke="#3D354B" stroke-width="1.4" stroke-linecap="round"/>
+  <line x1="35.2" y1="42" x2="38.8" y2="42" stroke="#3D354B" stroke-width="1.4" stroke-linecap="round"/>
+
+  <!-- highlight -->
+  <path d="M10 17 Q10 9 18 9 H24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.35"/>
+</svg>

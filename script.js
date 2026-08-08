@@ -1,51 +1,82 @@
-/* -----------------------------
-   Theme controls
-   
------------------------------ */
-const theme = {
-    accent: "#0a84ff",
-    accentStrong: "#399cff",
-    backgroundImage: "images/bgimage.jpg",
-    windowGlass: "rgba(255, 255, 255, 0.62)",
-    dockGlass: "rgba(255, 255, 255, 0.16)",
-    textMain: "#1c1c1e",
-    textSoft: "#333333"
-};
+const availableThemes = [
+    "default",
+    "pink",
+    "lavender",
+    "mint",
+    "sky",
 
-function applyTheme() {
-    document.documentElement.style.setProperty("--bg-image", `url("${theme.backgroundImage}")`);
-    document.documentElement.style.setProperty("--app-accent", theme.accent);
-    document.documentElement.style.setProperty("--app-accent-strong", theme.accentStrong);
-    document.documentElement.style.setProperty("--window-glass", theme.windowGlass);
-    document.documentElement.style.setProperty("--dock-glass", theme.dockGlass);
-    document.documentElement.style.setProperty("--text-main", theme.textMain);
-    document.documentElement.style.setProperty("--text-soft", theme.textSoft);
+];
+
+function setTheme(themeName) {
+
+    if (!availableThemes.includes(themeName)) {
+        themeName = "default";
+    }
+
+    if (themeName === "default") {
+        document.documentElement.removeAttribute("data-theme");
+    } else {
+        document.documentElement.setAttribute("data-theme", themeName);
+    }
+
+    localStorage.setItem("piko-theme", themeName);
+
+    updateThemeSelection(themeName);
+}
+function updateThemeSelection(themeName){
+    document.querySelectorAll(".theme-option").forEach(function (option){
+        option.classList.toggle(
+            "active",
+            option.dataset.theme === themeName
+        );
+    });
+}
+function loadSavedTheme(){
+    const savedTheme=localStorage.getItem("piko-theme") || "default";
+    setTheme(savedTheme);
+}
+function initThemeSettings(){
+    document.querySelectorAll(".theme-option").forEach(function(option){
+        option.addEventListener("click", function(){
+            setTheme(option.dataset.theme);
+        });
+    });
+    loadSavedTheme();
 }
 
-applyTheme();
-
-/* -----------------------------
-   App registry
-   
------------------------------ */
 const appRegistry = [
     {
         id: "notes",
         label: "Notes",
-        icon: "images/notes.png",
+        icon: "images/icons/notes.svg",
         windowId: "notes"
     },
     {
         id: "calculator",
-        label: "Calc",
-        icon: "images/calculator.png",
+        label: "Calculator",
+        icon: "images/icons/calculator.svg",
         windowId: "calculator"
+    },
+    {
+        id: "gallery",
+        label: "Gallery",
+        icon: "images/icons/gallery.svg",
+        windowId: "gallery"
+    },
+    {
+        id: "settings",
+        label: "Settings",
+        icon: "images/icons/settings.svg",
+        windowId: "settings"
+    },
+    {
+        id: "todo",
+        label:"Todo",
+        icon:"images/icons/todo.svg",
+        windowId: "todo"
     }
 ];
 
-/* -----------------------------
-   Desktop and dock rendering
------------------------------ */
 function renderDockApps() {
     const dock = document.querySelector("#dock");
     if (!dock) return;
@@ -55,7 +86,8 @@ function renderDockApps() {
     appRegistry.forEach(function (app) {
         const item = document.createElement("div");
         item.className = "dock-item";
-        item.title = app.label;
+        item.dataset.label = app.label;
+        item.dataset.windowId = app.windowId;
 
         item.innerHTML = `
             <img src="${app.icon}" class="dock-icon-image" alt="${app.label}">
@@ -70,9 +102,6 @@ function renderDockApps() {
     });
 }
 
-/* -----------------------------
-   Widgets section
------------------------------ */
 function renderCalendar() {
     const now = new Date();
     const month = now.getMonth();
@@ -117,163 +146,134 @@ function renderCalendar() {
     }
 }
 
-/* -----------------------------
-   Weather Widget
------------------------------ */
 
-function weatherDescription(code){
-
-    const map = {
-
-        0:"Clear",
-
-        1:"Mainly Clear",
-
-        2:"Partly Cloudy",
-
-        3:"Cloudy",
-
-        45:"Fog",
-
-        48:"Fog",
-
-        51:"Light Drizzle",
-
-        53:"Drizzle",
-
-        55:"Heavy Drizzle",
-
-        61:"Rain",
-
-        63:"Rain",
-
-        65:"Heavy Rain",
-
-        71:"Snow",
-
-        73:"Snow",
-
-        75:"Heavy Snow",
-
-        95:"Thunderstorm",
-
-        96:"Thunderstorm",
-
-        99:"Thunderstorm"
-
-    };
-
-    return map[code] || "Unknown";
-
-}
-
-async function loadWeather(latitude, longitude) {
-    if (typeof WEATHER_ENABLED !== 'undefined' && !WEATHER_ENABLED) return;
+function setWeatherUnavailable() {
     const locationElement = document.getElementById("weatherLocation");
     const tempElement = document.getElementById("weatherTemp");
     const conditionElement = document.getElementById("weatherCondition");
     const highLowElement = document.getElementById("weatherHighLow");
+    const timeElement = document.getElementById("weatherTime");
 
-    if (!locationElement || !tempElement || !conditionElement || !highLowElement) return;
+    if (locationElement) locationElement.textContent = "New York";
+    if (tempElement) tempElement.textContent = "--°";
+    if (conditionElement) conditionElement.textContent = "";
+    if (highLowElement) highLowElement.textContent = "";
+    if (timeElement) timeElement.textContent = new Date().toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit"
+    });
+}
 
+async function loadWeather() {
     try {
-        const weatherResponse = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=auto`
-        );
-        const weather = await weatherResponse.json();
+        // request current weather + daily max/min to show highs and lows
+        const url = "https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=America%2FNew_York";
+        const response = await fetch(url);
 
-        let city = "";
-
-        try {
-            const geoResponse = await fetch(
-                `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
-            );
-            const place = await geoResponse.json();
-            city = place.city || place.locality || place.principalSubdivision || place.countryName || "";
-        } catch (geoError) {
-            console.warn("Reverse geocoding failed, leaving city empty.", geoError);
+        if (!response.ok) {
+            throw new Error("Weather request failed");
         }
 
-        const currentTemp = weather.current?.temperature_2m;
-        const weatherCode = weather.current?.weather_code;
-        const maxTemp = weather.daily?.temperature_2m_max?.[0];
-        const minTemp = weather.daily?.temperature_2m_min?.[0];
+        const data = await response.json();
+        const current = data.current_weather || null;
+        const daily = data.daily || null;
 
-        locationElement.textContent = city || "Unknown location";
-        tempElement.textContent = currentTemp !== undefined ? `${Math.round(currentTemp)}°` : "--°";
-        conditionElement.textContent = weatherCode !== undefined ? weatherDescription(weatherCode) : "Weather unavailable";
-        highLowElement.textContent =
-            maxTemp !== undefined && minTemp !== undefined
-                ? `H:${Math.round(maxTemp)}°  L:${Math.round(minTemp)}°`
-                : "H:--° L:--°";
+        const locationElement = document.getElementById("weatherLocation");
+        const tempElement = document.getElementById("weatherTemp");
+        const conditionElement = document.getElementById("weatherCondition");
+        const highLowElement = document.getElementById("weatherHighLow");
+        const timeElement = document.getElementById("weatherTime");
 
-                // Toggle to enable weather JS when needed for live data
-                const WEATHER_ENABLED = false;
+        function weatherCodeToText(code) {
+            const map = {
+                0: "Clear",
+                1: "Mainly clear",
+                2: "Partly cloudy",
+                3: "Overcast",
+                45: "Fog",
+                48: "Depositing rime fog",
+                51: "Light drizzle",
+                53: "Moderate drizzle",
+                55: "Dense drizzle",
+                56: "Freezing drizzle",
+                57: "Dense freezing drizzle",
+                61: "Light rain",
+                63: "Moderate rain",
+                65: "Heavy rain",
+                66: "Freezing rain",
+                67: "Heavy freezing rain",
+                71: "Light snow",
+                73: "Moderate snow",
+                75: "Heavy snow",
+                77: "Snow grains",
+                80: "Slight rain showers",
+                81: "Moderate rain showers",
+                82: "Violent rain showers",
+                85: "Slight snow showers",
+                86: "Heavy snow showers",
+                95: "Thunderstorm",
+                96: "Thunderstorm with slight hail",
+                99: "Thunderstorm with heavy hail"
+            };
+            return map[code] || "";
+        }
+
+        if (locationElement) locationElement.textContent = "New York";
+
+        if (current && tempElement) {
+            tempElement.textContent = `${Math.round(current.temperature)}°`;
+        } else if (tempElement) {
+            tempElement.textContent = "--°";
+        }
+
+        if (conditionElement) {
+            conditionElement.textContent = current ? weatherCodeToText(current.weathercode) : "";
+        }
+
+        if (highLowElement && daily && Array.isArray(daily.temperature_2m_max) && daily.temperature_2m_max.length > 0) {
+            const hi = Math.round(daily.temperature_2m_max[0]);
+            const lo = Math.round(daily.temperature_2m_min[0]);
+            highLowElement.textContent = `${hi}° / ${lo}°`;
+        } else if (highLowElement) {
+            highLowElement.textContent = "N/A";
+        }
+
+        if (timeElement) {
+            // display local time for the current weather if available
+            if (current && current.time) {
+                const t = new Date(current.time);
+                if (!isNaN(t)) {
+                    timeElement.textContent = t.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+                } else {
+                    timeElement.textContent = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+                }
+            } else {
+                timeElement.textContent = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+            }
+        }
     } catch (error) {
-        console.error(error);
-        if (locationElement) locationElement.textContent = "Weather unavailable";
-        if (tempElement) tempElement.textContent = "--°";
-        if (conditionElement) conditionElement.textContent = "Unable to load weather";
-        if (highLowElement) highLowElement.textContent = "H:--° L:--°";
+        console.error("Weather fetch failed:", error);
+        setWeatherUnavailable();
     }
 }
 
 function updateWeatherClock(){
+    const timeElement = document.getElementById("weatherTime");
 
-    if (typeof WEATHER_ENABLED !== 'undefined' && !WEATHER_ENABLED) return;
-
-    document.getElementById("weatherTime").textContent =
-        new Date().toLocaleTimeString([],{
-
-            hour:"numeric",
-            minute:"2-digit"
+    if (timeElement) {
+        timeElement.textContent = new Date().toLocaleTimeString([], {
+            hour: "numeric",
+            minute: "2-digit"
         });
-
+    }
 }
 
 function initWeather() {
-    if (typeof WEATHER_ENABLED !== 'undefined' && !WEATHER_ENABLED) return;
-    const locationElement = document.getElementById("weatherLocation");
-    const tempElement = document.getElementById("weatherTemp");
-    const conditionElement = document.getElementById("weatherCondition");
-    const highLowElement = document.getElementById("weatherHighLow");
-
-    if (!locationElement || !tempElement || !conditionElement || !highLowElement) return;
-
-    // Indicate that we are attempting to resolve the user's city
-    locationElement.textContent = "Locating…";
-
-    if (!navigator.geolocation) {
-        locationElement.textContent = "Location Unsupported";
-        tempElement.textContent = "--°";
-        conditionElement.textContent = "Weather unavailable";
-        highLowElement.textContent = "H:--° L:--°";
-        return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-        function (position) {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-
-            loadWeather(lat, lon);
-            updateWeatherClock();
-            setInterval(updateWeatherClock, 1000);
-            setInterval(function () {
-                loadWeather(lat, lon);
-            }, 600000);
-        },
-        function () {
-            locationElement.textContent = "Location Denied";
-            tempElement.textContent = "--°";
-            conditionElement.textContent = "Weather unavailable";
-            highLowElement.textContent = "H:--° L:--°";
-        }
-    );
+    loadWeather();
+    updateWeatherClock();
+    setInterval(updateWeatherClock, 60000);
 }
-/* -----------------------------
-   Clock functionality
------------------------------ */
+/*Clock functionality */
 function updateTime() {
     const now = new Date();
     const timeText = now.toLocaleTimeString([], {
@@ -291,9 +291,6 @@ function updateTime() {
 setInterval(updateTime, 1000);
 updateTime();
 
-/* -----------------------------
-   Window drag and focus logic
------------------------------ */
 function dragElement(element) {
     if (!element) return;
 
@@ -314,6 +311,8 @@ function dragElement(element) {
         e.preventDefault();
         initialX = e.clientX;
         initialY = e.clientY;
+        currentX = element.offsetLeft;
+        currentY = element.offsetTop;
         document.onmouseup = stopDragging;
         document.onmousemove = moveElement;
     }
@@ -321,21 +320,23 @@ function dragElement(element) {
     function moveElement(e) {
         e = e || window.event;
         e.preventDefault();
-        currentX = initialX - e.clientX;
-        currentY = initialY - e.clientY;
-        initialX = e.clientX;
-        initialY = e.clientY;
+
+        const deltaX = e.clientX - initialX;
+        const deltaY = e.clientY - initialY;
+        const nextLeft = currentX + deltaX;
+        const nextTop = currentY + deltaY;
 
         const desktop = element.parentElement;
-        const minTop = 40;
-        const maxLeft = Math.max(0, desktop.clientWidth - element.offsetWidth);
-        const maxTop = Math.max(minTop, desktop.clientHeight - element.offsetHeight - 12);
+        if (!desktop) return;
 
-        const nextTop = Math.min(maxTop, Math.max(minTop, element.offsetTop - currentY));
-        const nextLeft = Math.min(maxLeft, Math.max(0, element.offsetLeft - currentX));
+        const edgePadding = 16;
+        const menuHeight = 72;
+        const dockHeight = 92;
+        const maxLeft = Math.max(edgePadding, desktop.clientWidth - element.offsetWidth - edgePadding);
+        const maxTop = Math.max(menuHeight, desktop.clientHeight - element.offsetHeight - dockHeight - edgePadding);
 
-        element.style.top = nextTop + "px";
-        element.style.left = nextLeft + "px";
+        element.style.left = `${Math.min(maxLeft, Math.max(edgePadding, nextLeft))}px`;
+        element.style.top = `${Math.min(maxTop, Math.max(menuHeight, nextTop))}px`;
     }
 
     function stopDragging() {
@@ -365,14 +366,48 @@ function handleWindowTap(element) {
     bringWindowToFront(element);
 }
 
+function syncDockItemState(element) {
+    if (!element) return;
+
+    const dockItem = document.querySelector(`.dock-item[data-window-id="${element.id}"]`);
+    if (!dockItem) return;
+
+    const isVisible = element.style.display === "block" && element.classList.contains("is-open");
+    dockItem.classList.toggle("active", isVisible);
+}
+
+function clampWindowToViewport(element) {
+    if (!element) return;
+
+    const desktop = element.parentElement;
+    if (!desktop) return;
+
+    const edgePadding = 16;
+    const menuHeight = 72;
+    const dockHeight = 92;
+    const fallbackTop = Math.max(menuHeight + 16, Math.min(120, (desktop.clientHeight - element.offsetHeight - dockHeight) / 2));
+    const fallbackLeft = Math.max(edgePadding, (desktop.clientWidth - element.offsetWidth) / 2);
+    const parsedTop = parseFloat(element.style.top);
+    const parsedLeft = parseFloat(element.style.left);
+    const nextTop = Number.isFinite(parsedTop) ? parsedTop : fallbackTop;
+    const nextLeft = Number.isFinite(parsedLeft) ? parsedLeft : fallbackLeft;
+    const maxLeft = Math.max(edgePadding, desktop.clientWidth - element.offsetWidth - edgePadding);
+    const maxTop = Math.max(menuHeight, desktop.clientHeight - element.offsetHeight - dockHeight - edgePadding);
+
+    element.style.left = `${Math.min(maxLeft, Math.max(edgePadding, nextLeft))}px`;
+    element.style.top = `${Math.min(maxTop, Math.max(menuHeight, nextTop))}px`;
+}
+
 function openWindow(element) {
     if (!element) return;
 
     element.style.display = "block";
+    clampWindowToViewport(element);
     element.classList.remove("is-closing");
     void element.offsetWidth;
     element.classList.add("is-open");
     bringWindowToFront(element);
+    syncDockItemState(element);
 }
 
 function closeWindow(element) {
@@ -386,6 +421,7 @@ function closeWindow(element) {
         if (element.classList.contains("is-closing")) {
             element.style.display = "none";
             element.classList.remove("is-closing");
+            syncDockItemState(element);
         }
     }, 180);
 }
@@ -439,9 +475,6 @@ function bindWindowControls() {
     });
 }
 
-/* -----------------------------
-   Welcome window
------------------------------ */
 const welcomeScreen = document.querySelector("#welcome");
 const welcomeOpenBtn = document.querySelector("#welcomeopen");
 
@@ -455,17 +488,22 @@ if (welcomeScreen) {
     openWindow(welcomeScreen);
 }
 
-/* -----------------------------
-   Notes app logic
------------------------------ */
 let activeNoteIndex = 0;
 const notesData = [
     {
         title: "Welcome Note",
         date: new Date().toLocaleDateString(),
-        content: "Welcome to MentOS Notes!\nClick '+ New Note' to create your own."
+        content: "Welcome to Piko Notes!\nClick '+ New Note' to create your own."
     }
 ];
+
+function autoResizeNoteEditor() {
+    const contentInput = document.querySelector("#noteContentInput");
+    if (!contentInput) return;
+
+    contentInput.style.height = "auto";
+    contentInput.style.height = `${Math.max(140, contentInput.scrollHeight)}px`;
+}
 
 function setNotesContent(index) {
     activeNoteIndex = index;
@@ -478,6 +516,7 @@ function setNotesContent(index) {
     }
 
     populateSidebar();
+    autoResizeNoteEditor();
 }
 
 function updateActiveNoteTitle(val) {
@@ -487,6 +526,7 @@ function updateActiveNoteTitle(val) {
 
 function updateActiveNoteContent(val) {
     notesData[activeNoteIndex].content = val;
+    autoResizeNoteEditor();
 }
 
 function addNewNote() {
@@ -537,9 +577,6 @@ function escapeHtml(str) {
     return div.innerHTML;
 }
 
-/* -----------------------------
-   Calculator logic
------------------------------ */
 const calcDisplay = document.querySelector("#calcDisplay");
 
 function pressCalc(val) {
@@ -598,18 +635,194 @@ function calculateResult() {
         calcDisplay.value = "Error";
     }
 }
+const galleryImages = [
+    "images/gallery/1 (1).jpg",
+    "images/gallery/1 (2).jpg",
+    "images/gallery/1 (3).jpg",
+    "images/gallery/1 (4).jpg",
+    "images/gallery/1 (5).jpg",
+    "images/gallery/1 (6).jpg",
+    "images/gallery/1 (7).jpg",
+    "images/gallery/1 (8).jpg",
+    "images/gallery/1 (9).jpg",
+    "images/gallery/1 (10).jpg",
+    "images/gallery/1 (11).jpg",
+    "images/gallery/1 (12).jpg",
+    "images/gallery/1 (13).jpg",
+    "images/gallery/1 (14).jpg",
+];
 
-/* -----------------------------
-   Initialization
------------------------------ */
+function renderGallery() {
+    const grid = document.getElementById("galleryGrid");
+    if (!grid) return;
+
+    grid.innerHTML = "";
+
+    galleryImages.forEach(src => {
+        const item = document.createElement("div");
+        item.className = "gallery-item";
+
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "Gallery Image";
+
+        item.appendChild(img);
+        grid.appendChild(item);
+    });
+}
+let todoData = [];
+
+function renderTodoList() {
+    const list = document.getElementById("todoList");
+    if (!list) return;
+
+    list.innerHTML = "";
+
+    todoData.forEach((task, index) => {
+        const item = document.createElement("div");
+        item.className = "todo-item";
+        if (task.done) item.classList.add("todo-done");
+
+        item.innerHTML = `
+            <input type="checkbox" ${task.done ? "checked" : ""} >
+            <span class="todo-text">${task.text}</span>
+            <button class="button todo-remove-btn">Remove</button>
+            `;
+
+        const checkbox = item.querySelector("input");
+        const btn = item.querySelector("button");
+
+        if (checkbox) {
+            checkbox.addEventListener("change", () => {
+                task.done = !task.done;
+renderTodoList();
+renderTodoWidget();
+            });
+        }
+
+        if (btn) {
+            btn.addEventListener("click", () => {
+                todoData.splice(index, 1);
+renderTodoList();
+renderTodoWidget();
+            });
+        }
+
+        list.appendChild(item);
+    });
+}
+
+function addTodoTask() {
+    const input = document.getElementById("todoInput");
+    if (!input || !input.value.trim()) return;
+
+    todoData.push({
+        text: input.value.trim(),
+        done: false
+    });
+    input.value = "";
+renderTodoList();
+renderTodoWidget();
+}
+function renderTodoWidget(){
+    const widgetList = document.getElementById("todoWidgetList");
+    if (!widgetList) return;
+    widgetList.innerHTML= "";
+    if (todoData.length === 0){
+        const empty = document.createElement("div");
+        empty.className = "todo-widget-empty";
+        empty.textContent = "Add more in the app";
+        empty.addEventListener("click", function () {
+            openAppWindowById("todo");
+        });
+        widgetList.appendChild(empty);
+        return;
+    }
+    todoData.slice(0, 3).forEach(function (task) {
+        const item = document.createElement("div");
+        item.className= "todo-widget-item";
+        if (task.done) {
+            item.classList.add("todo-done");
+        }
+        item.innerHTML = `
+            <input type="checkbox" ${task.done ? "checked" : ""} >
+            <span class="todo-text">${escapeHtml(task.text)}</span>
+        `;
+        const checkbox = item.querySelector("input");
+        checkbox.addEventListener("change", function(e){
+            e.stopPropagation();
+
+            task.done = checkbox.checked;
+            renderTodoList();
+            renderTodoWidget();
+        });
+
+        item.addEventListener("click", function (){
+            openAppWindowById("todo");
+        });
+        widgetList.appendChild(item);
+    });
+
+}
+
+    function openAppWindowById(id) {
+    const windowElement = document.getElementById(id);
+    if (!windowElement) return;
+    openWindow(windowElement);
+}
+
+function initDesktopContextMenu() {
+    const menu = document.getElementById("desktopContextMenu");
+    if (!menu) return;
+
+    document.addEventListener("contextmenu", e => {
+
+        if (
+            e.target.closest(".window") ||
+            e.target.closest(".dock") ||
+            e.target.closest(".widget") ||
+            e.target.closest(".menubar")
+        )
+            return;
+
+        e.preventDefault();
+        menu.style.display = "block";
+        menu.style.left = e.clientX + "px";
+        menu.style.top = e.clientY + "px";
+    });
+
+    document.addEventListener("click", () => {
+        menu.style.display = "none";
+    });
+
+    const newNoteBtn = menu.querySelector('[data-action="new-note"]');
+    const todoBtn = menu.querySelector('[data-action="todo"]');
+    const settingsBtn = menu.querySelector('[data-action="settings"]');
+    const aboutBtn = menu.querySelector('[data-action="about"]');
+
+    if (newNoteBtn) newNoteBtn.onclick = () => {
+    menu.style.display = "none";
+    openAppWindowById("notes");
+    addNewNote();
+};
+    if (todoBtn) todoBtn.onclick = () => { openAppWindowById("todo"); };
+    if (settingsBtn) settingsBtn.onclick = () => { openAppWindowById("settings"); };
+    if (aboutBtn) aboutBtn.onclick = () => { openAppWindowById("about"); };
+}
+
 function init() {
+    initThemeSettings();
     renderDockApps();
     renderCalendar();
-    // Weather JS disabled for showcase by default. Set `WEATHER_ENABLED = true` to re-enable.
-    // initWeather();
+    initWeather();
     bindWindowControls();
     populateSidebar();
     setNotesContent(0);
+
+    renderGallery();
+    renderTodoList();
+    renderTodoWidget();
+    initDesktopContextMenu();
 }
 
 init();
