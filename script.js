@@ -158,15 +158,11 @@ function setWeatherUnavailable() {
     if (tempElement) tempElement.textContent = "--°";
     if (conditionElement) conditionElement.textContent = "";
     if (highLowElement) highLowElement.textContent = "";
-    if (timeElement) timeElement.textContent = new Date().toLocaleTimeString([], {
-        hour: "numeric",
-        minute: "2-digit"
-    });
+    if (timeElement) timeElement.textContent = "--:--";
 }
 
 async function loadWeather() {
     try {
-        // request current weather + daily max/min to show highs and lows
         const url = "https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=America%2FNew_York";
         const response = await fetch(url);
 
@@ -239,7 +235,7 @@ async function loadWeather() {
         }
 
         if (timeElement) {
-            // display local time for the current weather if available
+           
             if (current && current.time) {
                 const t = new Date(current.time);
                 if (!isNaN(t)) {
@@ -257,21 +253,9 @@ async function loadWeather() {
     }
 }
 
-function updateWeatherClock(){
-    const timeElement = document.getElementById("weatherTime");
-
-    if (timeElement) {
-        timeElement.textContent = new Date().toLocaleTimeString([], {
-            hour: "numeric",
-            minute: "2-digit"
-        });
-    }
-}
-
 function initWeather() {
     loadWeather();
-    updateWeatherClock();
-    setInterval(updateWeatherClock, 60000);
+    setInterval(loadWeather, 10 * 60 * 1000);
 }
 /*Clock functionality */
 function updateTime() {
