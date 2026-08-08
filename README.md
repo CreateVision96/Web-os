@@ -23,4 +23,4 @@ so im thinking about adding a browser
 be able to change wallpaper in settings which goes with the themes i have rn
 
 check out at:
-<img width="846" height="834" alt="image" src="https://github.com/user-attachments/assets/836c01e0-6e3c-460a-aa69-2ff788b65b16" />
+https://createvision96.github.io/Web-os/
