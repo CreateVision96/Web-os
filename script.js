@@ -117,6 +117,12 @@ const appRegistry = [
         windowId: "gallery"
     },
     {
+        id: "browser",
+        label: "Browser",
+        icon: "images/icons/browser.svg",
+        windowId: "browser"
+    },
+    {
         id: "todo",
         label:"Todo",
         icon:"images/icons/todo.svg",
@@ -707,6 +713,7 @@ function renderGallery() {
         grid.appendChild(item);
     });
 }
+
 let todoData = [];
 
 function renderTodoList() {
