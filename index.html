@@ -103,7 +103,10 @@
                     <div class="notes-editor-row">
                         <input id="noteTitleInput" type="text" oninput="updateActiveNoteTitle(this.value)"
                             placeholder="Note Title" class="input note-title-input" />
-                        <button id="deleteNoteBtn" class="icon-button button-danger delete-note-btn" onclick="deleteActiveNote()" title="Delete note">🗑</button>
+                        <button id="deleteNoteBtn" class="icon-button button-danger delete-note-btn" onclick="deleteActiveNote()" title="Delete note">
+                            <img 
+                            src="images/icons/trash.svg" alt="" class="delete-note-icon">
+                        </button>
                     </div>
                     <textarea id="noteContentInput" oninput="updateActiveNoteContent(this.value)"
                         placeholder="Start typing..." class="input textarea note-content-input"></textarea>
@@ -203,6 +206,11 @@
                     <span>Lavender</span>
                 </button>
 
+                <button class="theme-option" data-theme="luca">
+                    <span class="theme-preview theme-preview-luca"></span>
+                    <span>Luca</span>
+                </button>
+
                 <button class="theme-option" data-theme="mint">
                     <span class="theme-preview theme-preview-mint"></span>
                     <span>Mint</span>
@@ -212,6 +220,41 @@
                     <span class="theme-preview theme-preview-sky"></span>
                     <span>Sky</span>
                 </button>
+            </div>
+        </div>
+
+        <div class="settings-group wallpaper-group">
+            <div class="settings-label">Wallpaper</div>
+            <div class="wallpaper-options">
+                <button class="wallpaper-option active"
+                data-wallpaper="wall0"
+                title="default">
+            <img src="images/wallpaper/wall0.png"></button>
+
+            <button class="wallpaper-option"
+            data-wallpaper="wall1"
+            title="pink">
+        <img src="images/wallpaper/wall1.png"></button>
+
+        <button class="wallpaper-option"
+        data-wallpaper="wall2"
+        title="lavender">
+    <img src="images/wallpaper/wall2.jpg"></button>
+
+    <button class="wallpaper-option"
+    data-wallpaper="wall3"
+    title="luca">
+<img src="images/wallpaper/wall3.png"></button>
+
+<button class="wallpaper-option"
+data-wallpaper="wall4"
+title="mint">
+<img src="images/wallpaper/wall4.jpg"></button>
+
+<button class="wallpaper-option"
+data-wallpaper="wall5"
+title="sky">
+<img src="images/wallpaper/wall5.png"></button>
             </div>
         </div>
     </div>
@@ -283,9 +326,10 @@
             <div class="welcome-body">
                     <img src="images/Rukia.jpg" width="84" height="84" class="welcome-avatar" alt="Piko mascot">
                     <h1 class="welcome-title">Piko</h1>
-                    <p class="welcome-text">A tiny desktop<br>
-                        built for the web<br>
-                        made for learning</p>
+                    <p class="welcome-text">
+    To live is to suffer, to survive is to find<br>
+    some meaning in the suffering.
+</p>
                 </div>
         </div>
 

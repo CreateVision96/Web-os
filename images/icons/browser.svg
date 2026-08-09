@@ -1,0 +1,45 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="browserClip2">
+      <rect x="9" y="10" width="46" height="48" rx="8"/>
+    </clipPath>
+  </defs>
+
+  <rect x="10" y="12" width="46" height="48" rx="8" fill="#3D354B" opacity="0.08"/>
+
+  <!-- window body -->
+  <rect x="9" y="10" width="46" height="48" rx="8" fill="#FFFCF7" stroke="#3D354B" stroke-width="3"/>
+
+  <!-- header bar -->
+  <g clip-path="url(#browserClip2)">
+    <rect x="9" y="10" width="46" height="13" fill="#90CCFB"/>
+  </g>
+  <line x1="9" y1="23" x2="55" y2="23" stroke="#3D354B" stroke-width="3"/>
+
+  <!-- traffic dots -->
+  <circle cx="16" cy="16.5" r="2" fill="#FF93B2" stroke="#3D354B" stroke-width="1"/>
+  <circle cx="22.5" cy="16.5" r="2" fill="#FFE46C" stroke="#3D354B" stroke-width="1"/>
+  <circle cx="29" cy="16.5" r="2" fill="#A8FFA0" stroke="#3D354B" stroke-width="1"/>
+
+  <!-- tiny globe favicon tab -->
+  <circle cx="48" cy="16.5" r="4" fill="#FFFCF7" stroke="#3D354B" stroke-width="1.6"/>
+  <ellipse cx="48" cy="16.5" rx="1.7" ry="4" fill="none" stroke="#A980FF" stroke-width="1"/>
+  <line x1="44.4" y1="16.5" x2="51.6" y2="16.5" stroke="#A980FF" stroke-width="1"/>
+
+  <!-- page hero image -->
+  <rect x="14" y="28" width="36" height="15" rx="4" fill="#90CCFB" stroke="#3D354B" stroke-width="2.2"/>
+  <circle cx="44" cy="32.5" r="2.6" fill="#FFE46C" stroke="#3D354B" stroke-width="1.2"/>
+  <path d="M16 43 L23 33 L29 43 Z" fill="#A8FFA0" stroke="#3D354B" stroke-width="1.8" stroke-linejoin="round"/>
+
+  <!-- page text lines -->
+  <line x1="14" y1="48" x2="46" y2="48" stroke="#9D97AA" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="14" y1="52" x2="40" y2="52" stroke="#9D97AA" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="14" y1="56" x2="30" y2="56" stroke="#9D97AA" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- click cursor accent -->
+  <path d="M49 45 L49 58 L52 55.2 L54.3 60.2 L56.4 59.2 L54.1 54.2 L57.8 53.9 Z"
+        fill="#FFFCF7" stroke="#3D354B" stroke-width="1.6" stroke-linejoin="round"/>
+
+  <!-- highlight -->
+  <path d="M9 18 Q9 10 17 10 H23" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.35"/>
+</svg>

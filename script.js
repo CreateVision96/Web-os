@@ -4,7 +4,7 @@ const availableThemes = [
     "lavender",
     "mint",
     "sky",
-
+    "luca",
 ];
 
 function setTheme(themeName) {
@@ -44,6 +44,59 @@ function initThemeSettings(){
     loadSavedTheme();
 }
 
+const availableWallpapers =[
+    "wall0",
+    "wall1",
+    "wall2",
+    "wall3",
+    "wall4",
+    "wall5"
+
+];
+
+const wallpaperFiles = {
+    wall0: "images/wallpaper/wall0.png",
+    wall1: "images/wallpaper/wall1.png",
+    wall2: "images/wallpaper/wall2.jpg",
+    wall3: "images/wallpaper/wall3.png",
+    wall4: "images/wallpaper/wall4.jpg",
+    wall5: "images/wallpaper/wall5.png",
+};
+
+function setWallpaper(wallpaperName){
+    if (!availableWallpapers.includes(wallpaperName)){
+        wallpaperName = "wall0";
+    }
+    const wallpaperFile = wallpaperFiles[wallpaperName];
+    document.documentElement.style.setProperty(
+        "--bg-image",
+        `url("${wallpaperFile}")`
+    );
+
+    localStorage.setItem("piko-wallpaper", wallpaperName);
+    document.querySelectorAll(".wallpaper-option"). forEach(function(option){
+        option.classList.toggle(
+            "active",
+            option.dataset.wallpaper === wallpaperName
+        );
+    });
+}
+
+function loadSavedWallpaper(){
+    const savedWallpaper = 
+    localStorage.getItem("piko-wallpaper") || "wall0";
+    setWallpaper(savedWallpaper);
+}
+
+function initWallpaperSettings(){
+    document.querySelectorAll(".wallpaper-option").forEach(function(option){
+        option.addEventListener("click", function(){
+            setWallpaper(option.dataset.wallpaper);
+        });
+    });
+    loadSavedWallpaper();
+}
+
 const appRegistry = [
     {
         id: "notes",
@@ -64,16 +117,16 @@ const appRegistry = [
         windowId: "gallery"
     },
     {
-        id: "settings",
-        label: "Settings",
-        icon: "images/icons/settings.svg",
-        windowId: "settings"
-    },
-    {
         id: "todo",
         label:"Todo",
         icon:"images/icons/todo.svg",
         windowId: "todo"
+    },
+    {
+        id: "settings",
+        label: "Settings",
+        icon: "images/icons/settings.svg",
+        windowId: "settings"
     }
 ];
 
@@ -796,6 +849,7 @@ function initDesktopContextMenu() {
 
 function init() {
     initThemeSettings();
+    initWallpaperSettings();
     renderDockApps();
     renderCalendar();
     initWeather();
