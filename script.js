@@ -444,7 +444,7 @@ function clampWindowToViewport(element) {
 function openWindow(element) {
     if (!element) return;
 
-    element.style.display = "block";
+    element.style.display = "";
     clampWindowToViewport(element);
     element.classList.remove("is-closing");
     void element.offsetWidth;
