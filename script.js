@@ -7,8 +7,13 @@ const availableThemes = [
     "luca",
 ];
 
-function setTheme(themeName) {
+function updateThemeSelection(themeName) {
+    document.querySelectorAll(".theme-option").forEach(function (option) {
+        option.classList.toggle("active", option.dataset.theme === themeName);
+    });
+}
 
+function setTheme(themeName) {
     if (!availableThemes.includes(themeName)) {
         themeName = "default";
     }
@@ -20,16 +25,7 @@ function setTheme(themeName) {
     }
 
     localStorage.setItem("piko-theme", themeName);
-
     updateThemeSelection(themeName);
-}
-function updateThemeSelection(themeName){
-    document.querySelectorAll(".theme-option").forEach(function (option){
-        option.classList.toggle(
-            "active",
-            option.dataset.theme === themeName
-        );
-    });
 }
 function loadSavedTheme(){
     const savedTheme=localStorage.getItem("piko-theme") || "default";
@@ -44,15 +40,19 @@ function initThemeSettings(){
     loadSavedTheme();
 }
 
-const availableWallpapers =[
+const availableWallpapers = [
     "wall0",
     "wall1",
     "wall2",
     "wall3",
     "wall4",
     "wall5"
-
 ];
+
+let currentWallpaperName = "wall0";
+let displayedWallpaperName = "wall0";
+let wallpaperTransitionTimer = null;
+let wallpaperTransitionVersion = 0;
 
 const wallpaperFiles = {
     wall0: "images/wallpaper/wall0.png",
@@ -63,18 +63,72 @@ const wallpaperFiles = {
     wall5: "images/wallpaper/wall5.png",
 };
 
-function setWallpaper(wallpaperName){
-    if (!availableWallpapers.includes(wallpaperName)){
+function setWallpaper(wallpaperName, animate = true) {
+    if (!availableWallpapers.includes(wallpaperName)) {
         wallpaperName = "wall0";
     }
-    const wallpaperFile = wallpaperFiles[wallpaperName];
-    document.documentElement.style.setProperty(
-        "--bg-image",
-        `url("${wallpaperFile}")`
-    );
 
+    const wallpaperFile = wallpaperFiles[wallpaperName];
+    const body = document.body;
+    const transitionId = ++wallpaperTransitionVersion;
+    const startWallpaperName = animate && wallpaperName !== displayedWallpaperName
+        ? displayedWallpaperName
+        : wallpaperName;
+
+    if (animate && wallpaperName !== displayedWallpaperName) {
+        if (wallpaperTransitionTimer) {
+            window.clearTimeout(wallpaperTransitionTimer);
+        }
+
+        document.documentElement.style.setProperty(
+            "--bg-image",
+            `url("${wallpaperFiles[startWallpaperName]}")`
+        );
+        document.documentElement.style.setProperty(
+            "--next-bg-image",
+            `url("${wallpaperFile}")`
+        );
+
+        body.classList.remove("wallpaper-changing");
+        void body.offsetWidth;
+        body.classList.add("wallpaper-changing");
+
+        wallpaperTransitionTimer = window.setTimeout(function () {
+            if (transitionId !== wallpaperTransitionVersion) {
+                return;
+            }
+
+            document.documentElement.style.setProperty(
+                "--bg-image",
+                `url("${wallpaperFile}")`
+            );
+            document.documentElement.style.setProperty(
+                "--next-bg-image",
+                `url("${wallpaperFile}")`
+            );
+            body.classList.remove("wallpaper-changing");
+            currentWallpaperName = wallpaperName;
+            displayedWallpaperName = wallpaperName;
+            wallpaperTransitionTimer = null;
+        }, 250);
+    } else {
+        document.documentElement.style.setProperty(
+            "--bg-image",
+            `url("${wallpaperFile}")`
+        );
+        document.documentElement.style.setProperty(
+            "--next-bg-image",
+            `url("${wallpaperFile}")`
+        );
+        body.classList.remove("wallpaper-changing");
+        currentWallpaperName = wallpaperName;
+        displayedWallpaperName = wallpaperName;
+    }
+
+    displayedWallpaperName = wallpaperName;
     localStorage.setItem("piko-wallpaper", wallpaperName);
-    document.querySelectorAll(".wallpaper-option"). forEach(function(option){
+
+    document.querySelectorAll(".wallpaper-option").forEach(function(option) {
         option.classList.toggle(
             "active",
             option.dataset.wallpaper === wallpaperName
@@ -82,21 +136,22 @@ function setWallpaper(wallpaperName){
     });
 }
 
-function loadSavedWallpaper(){
-    const savedWallpaper = 
-    localStorage.getItem("piko-wallpaper") || "wall0";
-    setWallpaper(savedWallpaper);
+function loadSavedWallpaper() {
+    const savedWallpaper =
+        localStorage.getItem("piko-wallpaper") || "wall0";
+
+    setWallpaper(savedWallpaper, false);
 }
 
-function initWallpaperSettings(){
-    document.querySelectorAll(".wallpaper-option").forEach(function(option){
-        option.addEventListener("click", function(){
+function initWallpaperSettings() {
+    document.querySelectorAll(".wallpaper-option").forEach(function(option) {
+        option.addEventListener("click", function() {
             setWallpaper(option.dataset.wallpaper);
         });
     });
+
     loadSavedWallpaper();
 }
-
 const appRegistry = [
     {
         id: "notes",
@@ -348,24 +403,28 @@ function dragElement(element) {
     dragTarget.onmousedown = startDragging;
 
     function startDragging(e) {
-        if (element.classList.contains("maximized")) return;
+    if (element.classList.contains("maximized")) return;
 
-        e = e || window.event;
-        e.preventDefault();
-        initialX = e.clientX;
-        initialY = e.clientY;
-        currentX = element.offsetLeft;
-        currentY = element.offsetTop;
-        document.onmouseup = stopDragging;
-        document.onmousemove = moveElement;
-    }
+    e = e || window.event;
+    e.preventDefault();
 
+    element.style.transition = "none";
+
+    initialX = e.clientX;
+    initialY = e.clientY;
+    currentX = element.offsetLeft;
+    currentY = element.offsetTop;
+
+    document.onmouseup = stopDragging;
+    document.onmousemove = moveElement;
+}
     function moveElement(e) {
         e = e || window.event;
         e.preventDefault();
 
         const deltaX = e.clientX - initialX;
         const deltaY = e.clientY - initialY;
+
         const nextLeft = currentX + deltaX;
         const nextTop = currentY + deltaY;
 
@@ -375,17 +434,33 @@ function dragElement(element) {
         const edgePadding = 16;
         const menuHeight = 72;
         const dockHeight = 92;
-        const maxLeft = Math.max(edgePadding, desktop.clientWidth - element.offsetWidth - edgePadding);
-        const maxTop = Math.max(menuHeight, desktop.clientHeight - element.offsetHeight - dockHeight - edgePadding);
 
-        element.style.left = `${Math.min(maxLeft, Math.max(edgePadding, nextLeft))}px`;
-        element.style.top = `${Math.min(maxTop, Math.max(menuHeight, nextTop))}px`;
+        const maxLeft = Math.max(
+            edgePadding,
+            desktop.clientWidth - element.offsetWidth - edgePadding
+        );
+
+        const maxTop = Math.max(
+            menuHeight,
+            desktop.clientHeight -
+            element.offsetHeight -
+            dockHeight -
+            edgePadding
+        );
+
+        element.style.left =
+            `${Math.min(maxLeft, Math.max(edgePadding, nextLeft))}px`;
+
+        element.style.top =
+            `${Math.min(maxTop, Math.max(menuHeight, nextTop))}px`;
     }
 
     function stopDragging() {
-        document.onmouseup = null;
-        document.onmousemove = null;
-    }
+    element.style.transition = "";
+
+    document.onmouseup = null;
+    document.onmousemove = null;
+}
 }
 
 let biggestIndex = 10;
@@ -481,7 +556,21 @@ function toggleWindowVisibility(element) {
 
 function toggleMaximize(element) {
     if (!element) return;
+
+    element.style.transition = `
+        top 0.3s ease,
+        left 0.3s ease,
+        right 0.3s ease,
+        bottom 0.3s ease,
+        width 0.3s ease,
+        height 0.3s ease
+    `;
+
+    void element.offsetWidth;
     element.classList.toggle("maximized");
+    setTimeout(() => {
+        element.style.transition = "";
+    }, 320);
 }
 
 function bindWindowControls() {
@@ -532,13 +621,32 @@ if (welcomeScreen) {
 }
 
 let activeNoteIndex = 0;
-const notesData = [
-    {
-        title: "Welcome Note",
-        date: new Date().toLocaleDateString(),
-        content: "Welcome to Piko Notes!\nClick '+ New Note' to create your own."
-    }
-];
+let notesData;
+
+try {
+    notesData = JSON.parse(localStorage.getItem("piko-notes")) || [
+        {
+            title: "Welcome Note",
+            date: new Date().toLocaleDateString(),
+            content: "Welcome to Piko Notes!\nClick '+ New Note' to create your own."
+        }
+    ];
+} catch (e) {
+    notesData = [
+        {
+            title: "Welcome Note",
+            date: new Date().toLocaleDateString(),
+            content: "Welcome to Piko Notes!\nClick '+ New Note' to create your own."
+        }
+    ];
+}
+
+function saveNotes(){
+    localStorage.setItem(
+        "piko-notes",
+        JSON.stringify(notesData)
+    );
+}
 
 function autoResizeNoteEditor() {
     const contentInput = document.querySelector("#noteContentInput");
@@ -564,11 +672,13 @@ function setNotesContent(index) {
 
 function updateActiveNoteTitle(val) {
     notesData[activeNoteIndex].title = val || "Untitled Note";
+    saveNotes();
     populateSidebar();
 }
 
 function updateActiveNoteContent(val) {
     notesData[activeNoteIndex].content = val;
+    saveNotes();
     autoResizeNoteEditor();
 }
 
@@ -580,17 +690,37 @@ function addNewNote() {
     };
 
     notesData.push(newNote);
+    saveNotes();
     setNotesContent(notesData.length - 1);
+
+    showNotification(
+        "Notes",
+        "New note created"
+    );
+
 }
 
 function deleteActiveNote() {
     if (notesData.length <= 1) {
-        notesData[0] = { title: "Untitled Note", date: new Date().toLocaleDateString(), content: "" };
+        notesData[0] = {
+             title: "Untitled Note",
+              date: new Date().toLocaleDateString(),
+               content: "" 
+            };
+            saveNotes();
         setNotesContent(0);
+
+        
+        showNotification(
+            "Notes",
+            "Note cleared"
+        );
         return;
     }
 
     notesData.splice(activeNoteIndex, 1);
+    saveNotes();
+
     const nextIndex = Math.max(0, activeNoteIndex - 1);
     setNotesContent(nextIndex);
 }
@@ -716,6 +846,20 @@ function renderGallery() {
 
 let todoData = [];
 
+try{
+    todoData = JSON.parse(
+        localStorage.getItem("piko-todo")
+    ) || [];
+} catch (e) {
+    todoData = [];
+}
+function saveTodos() {
+    localStorage.setItem(
+        "piko-todo",
+        JSON.stringify(todoData)
+    );
+}
+
 function renderTodoList() {
     const list = document.getElementById("todoList");
     if (!list) return;
@@ -739,16 +883,28 @@ function renderTodoList() {
         if (checkbox) {
             checkbox.addEventListener("change", () => {
                 task.done = !task.done;
+                saveTodos();
 renderTodoList();
 renderTodoWidget();
+
+showNotification(
+    "Todo",
+    task.done ? "Task complete" : "Task marked incomeplete"
+);
             });
         }
 
         if (btn) {
             btn.addEventListener("click", () => {
                 todoData.splice(index, 1);
+                saveTodos();
 renderTodoList();
 renderTodoWidget();
+
+showNotification(
+    "Todo",
+    "Task Removed"
+);
             });
         }
 
@@ -764,9 +920,15 @@ function addTodoTask() {
         text: input.value.trim(),
         done: false
     });
+    saveTodos();
     input.value = "";
 renderTodoList();
 renderTodoWidget();
+
+showNotification(
+    "Todo",
+    "New Task Added"
+);
 }
 function renderTodoWidget(){
     const widgetList = document.getElementById("todoWidgetList");
@@ -797,6 +959,7 @@ function renderTodoWidget(){
             e.stopPropagation();
 
             task.done = checkbox.checked;
+            saveTodos();
             renderTodoList();
             renderTodoWidget();
         });
@@ -852,6 +1015,36 @@ function initDesktopContextMenu() {
     if (todoBtn) todoBtn.onclick = () => { openAppWindowById("todo"); };
     if (settingsBtn) settingsBtn.onclick = () => { openAppWindowById("settings"); };
     if (aboutBtn) aboutBtn.onclick = () => { openAppWindowById("about"); };
+}
+
+function showNotification(title, message, duration = 2500) {
+    const container = document.getElementById("notificationContainer");
+    if (!container) return;
+
+    const notification = document.createElement("div");
+    notification.className = "notification";
+    notification.innerHTML = `
+    <div class="notification-title">
+    ${escapeHtml(title)}
+    </div>
+    <div class="notification-message">
+    ${escapeHtml(message)}
+    </div>
+    `;
+
+container.appendChild(notification);
+
+    requestAnimationFrame(() => {
+        notification.classList.add("show");
+    });
+
+    setTimeout(() => {
+        notification.classList.remove("show");
+
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, duration);
 }
 
 function init() {
