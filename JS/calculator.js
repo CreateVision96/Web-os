@@ -1,6 +1,6 @@
 const calcDisplay = document.querySelector("#calcDisplay");
 
-function pressCalc(val) {
+export function pressCalc(val) {
   if (!calcDisplay) return;
 
   if (calcDisplay.value === "0" || calcDisplay.value === "Error") {
@@ -10,7 +10,7 @@ function pressCalc(val) {
   }
 }
 
-function backspaceCalc() {
+export function backspaceCalc() {
   if (!calcDisplay) return;
 
   if (calcDisplay.value.length <= 1 || calcDisplay.value === "Error") {
@@ -20,13 +20,13 @@ function backspaceCalc() {
   }
 }
 
-function clearCalc() {
+export function clearCalc() {
   if (calcDisplay) {
     calcDisplay.value = "0";
   }
 }
 
-function percentCalc() {
+export function percentCalc() {
   if (!calcDisplay) return;
 
   const num = parseFloat(calcDisplay.value);
@@ -36,7 +36,7 @@ function percentCalc() {
   }
 }
 
-function calculateResult() {
+export function calculateResult() {
   if (!calcDisplay) return;
 
   const expression = calcDisplay.value;

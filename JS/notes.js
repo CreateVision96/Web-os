@@ -48,13 +48,13 @@ export function setNotesContent(index) {
   autoResizeNoteEditor();
 }
 
-function updateActiveNoteTitle(val) {
+export function updateActiveNoteTitle(val) {
   notesData[activeNoteIndex].title = val || "Untitled Note";
   saveNotes();
   populateSidebar();
 }
 
-function updateActiveNoteContent(val) {
+export function updateActiveNoteContent(val) {
   notesData[activeNoteIndex].content = val;
   saveNotes();
   autoResizeNoteEditor();
@@ -74,7 +74,7 @@ export function addNewNote() {
   showNotification("Notes", "New note created");
 }
 
-function deleteActiveNote() {
+export function deleteActiveNote() {
   if (notesData.length <= 1) {
     notesData[0] = {
       title: "Untitled Note",
