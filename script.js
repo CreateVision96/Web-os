@@ -172,6 +172,12 @@ const appRegistry = [
         windowId: "gallery"
     },
     {
+        id: "music",
+        label: "Music",
+        icon: "images/icons/music.svg",
+        windowId: "music"
+    },
+    {
         id: "browser",
         label: "Browser",
         icon: "images/icons/browser.svg",

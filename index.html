@@ -172,6 +172,74 @@
     </div>
         </section>
 
+        <section id="music" class="window window-music">
+
+    <div id="musicheader" class="windowheader">
+        <div class="window-controls">
+            <span id="musicclose" class="control-button close"></span>
+            <span class="control-button minimize"></span>
+            <span class="control-button zoom"></span>
+        </div>
+        <div class="window-title">Music</div>
+    </div>
+    <div class="music-body">
+        <div class="music-player">
+            <div class="music-artwork">
+                <img
+                    id="musicArt"
+                    src="images/icons/music.svg"
+                    alt="Album Artwork">
+            </div>
+            <div class="music-info">
+                <div id="musicName" class="music-title">
+                    No Song Playing
+                </div>
+                <div id="musicArtist" class="music-artist">
+                    Select a song
+                </div>
+            </div>
+            <div class="music-progress">
+                <span id="musicTime">0:00</span>
+                <input
+                    type="range"
+                    id="musicProgress"
+                    min="0"
+                    max="100"
+                    value="0">
+                <span id="musicDur">0:00</span>
+            </div>
+            <div class="music-controls">
+                <button
+                    id="musicPrev"
+                    class="music-control-button">
+                    |
+                </button>
+                <button
+                    id="musicPlay"
+                    class="music-control-button music-play-button">
+                    ▶
+                </button>
+                <button
+                    id="musicNext"
+                    class="music-control-button">
+                    |
+                </button>
+            </div>
+        </div>
+        <div class="music-playlist">
+            <div class="music-playlist-title">
+                Playlist
+            </div>
+            <div
+                id="musicPlaylist"
+                class="music-playlist-list">
+            </div>
+        </div>
+    </div>
+    <audio id="musicAudio"></audio>
+</section>
+        
+
         <section id="browser" class="window window-browser" data-app="browser">
             <div id="browserheader" class="windowheader">
                 <div class="window-controls">
@@ -295,7 +363,7 @@ title="sky">
 
         <div class="todo-input-row">
             <input id="todoInput" type="text" placeholder="Add a task..." class="input">
-            <button class="button" onclick="addTodoTask()">Add</button>
+            <button class="button" data-action="add-todo">Add</button>
         </div>
 
         <div id="todoList"></div>
@@ -366,6 +434,6 @@ title="sky">
         <div id="notificationContainer"></div>
     </div>
 
-    <script src="script.js"></script>
+<script type="module" src="js/main.js"></script>
 </body>
 </html>
