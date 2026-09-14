@@ -31,9 +31,9 @@ import { initTodo, renderTodoList, renderTodoWidget } from "./todo.js";
 
 import { initMusic } from "./music.js";
 
-import { initVid } from "../js/pikotok.js";
+import { initVid } from "../JS/pikotok.js";
 
-import { initGames } from "../js/games.js";
+import { initGames } from "../JS/games.js";
 
 Object.assign(window, {
   addNewNote,
