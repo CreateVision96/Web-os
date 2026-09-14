@@ -228,8 +228,29 @@ function renderPlaylist() {
   });
 }
 
+export function stopMusicPlayback() {
+  if (!musicAudio) return;
+
+  musicAudio.pause();
+
+  if (musicPlay) {
+    musicPlay.textContent = ">";
+  }
+}
+
 export function initMusic() {
   if (!musicAudio) return;
+
+  const musicWindow = document.getElementById("music");
+  const musicCloseButton = musicWindow
+    ? musicWindow.querySelector(".control-button.close")
+    : null;
+
+  if (musicCloseButton) {
+    musicCloseButton.addEventListener("click", function () {
+      stopMusicPlayback();
+    });
+  }
 
   if (musicPlay) {
     musicPlay.addEventListener("click", toggleMusic);

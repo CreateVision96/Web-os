@@ -1,439 +1,544 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Piko</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-</head>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+  </head>
 
-<body>
+  <body>
     <div class="desktop-shell">
-        <div class="menubar">
-            <div class="menubar-left">
-                <p id="welcomeopen" class="pill pill-brand">Piko</p>
-            </div>
-
-            <p class="pill menubar-status">🦋 Learning New things 🌸</p>
-            <p id="timeeElement" class="pill menubar-clock"></p>
+      <div class="menubar">
+        <div class="menubar-left">
+          <p id="welcomeopen" class="pill pill-brand">Piko</p>
         </div>
 
-        <div class="desktop-widgets" aria-label="Desktop widgets">
-            <!-- Calendar -->
-            <section class="widget widget-calendar">
-                <div class="widget-header">
-                    <div class="widget-title-group">
-                        <div class="widget-month" id="calendarMonth">July</div>
-                        <div class="widget-year" id="calendarYear">2026</div>
-                    </div>
-                    <div class="widget-today" id="calendarToday">28</div>
-                </div>
+        <p class="pill menubar-status">🦋 Learning New things 🌸</p>
+        <p id="timeeElement" class="pill menubar-clock"></p>
+      </div>
 
-                <div class="calendar-weekdays">
-                    <span>S</span>
-                    <span>M</span>
-                    <span>T</span>
-                    <span>W</span>
-                    <span>T</span>
-                    <span>F</span>
-                    <span>S</span>
-                </div>
-                <div id="calendarGrid" class="calendar-grid"></div>
-            </section>
-        
-<section class="widget widget-weather">
+      <div class="desktop-widgets" aria-label="Desktop widgets">
+        <!-- Calendar -->
+        <section class="widget widget-calendar">
+          <div class="widget-header">
+            <div class="widget-title-group">
+              <div class="widget-month" id="calendarMonth">July</div>
+              <div class="widget-year" id="calendarYear">2026</div>
+            </div>
+            <div class="widget-today" id="calendarToday">28</div>
+          </div>
 
-    <img
-        src="images/widget/weatherbg.jpg"
-        class="weather-bg"
-        alt="Weather Background">
-    <div class="weather-content">
-        <div class="weather-header">
-            <div>
+          <div class="calendar-weekdays">
+            <span>S</span>
+            <span>M</span>
+            <span>T</span>
+            <span>W</span>
+            <span>T</span>
+            <span>F</span>
+            <span>S</span>
+          </div>
+          <div id="calendarGrid" class="calendar-grid"></div>
+        </section>
+
+        <section class="widget widget-weather">
+          <img
+            src="images/widget/weatherbg.jpg"
+            class="weather-bg"
+            alt="Weather Background"
+          />
+          <div class="weather-content">
+            <div class="weather-header">
+              <div>
                 <div id="weatherLocation" class="weather-location">
-                    Not available
+                  Not available
                 </div>
-                <div id="weatherTime" class="weather-time">
-                    Not available
-                </div>
+                <div id="weatherTime" class="weather-time">Not available</div>
+              </div>
+              <div id="weatherTemp" class="weather-temp">--°</div>
             </div>
-            <div id="weatherTemp" class="weather-temp">
-                --°
-            </div>
-        </div>
-        <div class="weather-footer">
-            <div id="weatherCondition" class="weather-condition">
+            <div class="weather-footer">
+              <div id="weatherCondition" class="weather-condition">
                 Not available
+              </div>
+              <div id="weatherHighLow" class="weather-highlow">N/A</div>
             </div>
-            <div id="weatherHighLow" class="weather-highlow">
-                N/A
-            </div>
+          </div>
+        </section>
+        <section class="widget widget-todo" id="todoWidget">
+          <div class="todo-widget-header">
+            <span>Todo</span>
+          </div>
+          <div id="todoWidgetList" class="todo-widget-list"></div>
+        </section>
+      </div>
+
+      <section
+        id="notes"
+        class="window window-notes"
+        style="display: none; top: calc(50% - 160px); left: calc(50% - 250px)"
+        data-app="notes"
+      >
+        <div id="notesheader" class="windowheader">
+          <div class="window-controls">
+            <span id="notesclose" class="control-button close"></span>
+            <span class="control-button minimize"></span>
+            <span class="control-button zoom"></span>
+          </div>
+          <div class="window-title">Notes</div>
         </div>
-    </div>
 
-</section>
-<section class="widget widget-todo" id="todoWidget">
+        <div class="notes-body">
+          <div class="panel notes-sidebar">
+            <button class="button new-note-btn" onclick="addNewNote()">
+              + New Note
+            </button>
+            <div id="sidebar" class="sidebar-list"></div>
+          </div>
 
-    <div class="todo-widget-header">
-        <span>Todo</span>
-    </div>
-    <div id="todoWidgetList" class="todo-widget-list"></div>
-</section>
-         </div>
-
-
-
-        <section id="notes" class="window window-notes" style="display: none; top: calc(50% - 160px); left: calc(50% - 250px);" data-app="notes">
-            <div id="notesheader" class="windowheader">
-                <div class="window-controls">
-                    <span id="notesclose" class="control-button close"></span>
-                    <span class="control-button minimize"></span>
-                    <span class="control-button zoom"></span>
-                </div>
-                <div class="window-title">Notes</div>
+          <div class="notes-editor">
+            <div class="notes-editor-row">
+              <input
+                id="noteTitleInput"
+                type="text"
+                oninput="updateActiveNoteTitle(this.value)"
+                placeholder="Note Title"
+                class="input note-title-input"
+              />
+              <button
+                id="deleteNoteBtn"
+                class="icon-button button-danger delete-note-btn"
+                onclick="deleteActiveNote()"
+                title="Delete note"
+              >
+                <img
+                  src="images/icons/trash.svg"
+                  alt=""
+                  class="delete-note-icon"
+                />
+              </button>
             </div>
+            <textarea
+              id="noteContentInput"
+              oninput="updateActiveNoteContent(this.value)"
+              placeholder="Start typing..."
+              class="input textarea note-content-input"
+            ></textarea>
+          </div>
+        </div>
+      </section>
 
-            <div class="notes-body">
-                <div class="panel notes-sidebar">
-                    <button class="button new-note-btn" onclick="addNewNote()">+ New Note</button>
-                    <div id="sidebar" class="sidebar-list"></div>
-                </div>
+      <section
+        id="calculator"
+        class="window window-calc"
+        style="display: none; top: calc(50% - 200px); left: calc(50% - 120px)"
+        data-app="calculator"
+      >
+        <div id="calculatorheader" class="windowheader">
+          <div class="window-controls">
+            <span id="calcclose" class="control-button close"></span>
+            <span class="control-button minimize"></span>
+            <span class="control-button zoom"></span>
+          </div>
+          <div class="window-title">Calculator</div>
+        </div>
 
-                <div class="notes-editor">
-                    <div class="notes-editor-row">
-                        <input id="noteTitleInput" type="text" oninput="updateActiveNoteTitle(this.value)"
-                            placeholder="Note Title" class="input note-title-input" />
-                        <button id="deleteNoteBtn" class="icon-button button-danger delete-note-btn" onclick="deleteActiveNote()" title="Delete note">
-                            <img 
-                            src="images/icons/trash.svg" alt="" class="delete-note-icon">
-                        </button>
-                    </div>
-                    <textarea id="noteContentInput" oninput="updateActiveNoteContent(this.value)"
-                        placeholder="Start typing..." class="input textarea note-content-input"></textarea>
-                </div>
-            </div>
-        </section>
+        <div class="calc-body">
+          <input
+            id="calcDisplay"
+            type="text"
+            value="0"
+            readonly
+            class="input calc-display"
+          />
 
-        <section id="calculator" class="window window-calc" style="display: none; top: calc(50% - 200px); left: calc(50% - 120px);" data-app="calculator">
-            <div id="calculatorheader" class="windowheader">
-                <div class="window-controls">
-                    <span id="calcclose" class="control-button close"></span>
-                    <span class="control-button minimize"></span>
-                    <span class="control-button zoom"></span>
-                </div>
-                <div class="window-title">Calculator</div>
-            </div>
+          <div class="calc-grid">
+            <button class="button calc-btn calc-btn-func" onclick="clearCalc()">
+              AC
+            </button>
+            <button
+              class="button calc-btn calc-btn-func"
+              onclick="backspaceCalc()"
+            >
+              ⌫
+            </button>
+            <button
+              class="button calc-btn calc-btn-func"
+              onclick="percentCalc()"
+            >
+              %
+            </button>
+            <button
+              class="button calc-btn calc-btn-op"
+              onclick="pressCalc('/')"
+            >
+              ÷
+            </button>
 
-            <div class="calc-body">
-                <input id="calcDisplay" type="text" value="0" readonly class="input calc-display" />
+            <button class="button calc-btn" onclick="pressCalc('7')">7</button>
+            <button class="button calc-btn" onclick="pressCalc('8')">8</button>
+            <button class="button calc-btn" onclick="pressCalc('9')">9</button>
+            <button
+              class="button calc-btn calc-btn-op"
+              onclick="pressCalc('*')"
+            >
+              ×
+            </button>
 
-                <div class="calc-grid">
-                    <button class="button calc-btn calc-btn-func" onclick="clearCalc()">AC</button>
-                    <button class="button calc-btn calc-btn-func" onclick="backspaceCalc()">⌫</button>
-                    <button class="button calc-btn calc-btn-func" onclick="percentCalc()">%</button>
-                    <button class="button calc-btn calc-btn-op" onclick="pressCalc('/')">÷</button>
+            <button class="button calc-btn" onclick="pressCalc('4')">4</button>
+            <button class="button calc-btn" onclick="pressCalc('5')">5</button>
+            <button class="button calc-btn" onclick="pressCalc('6')">6</button>
+            <button
+              class="button calc-btn calc-btn-op"
+              onclick="pressCalc('-')"
+            >
+              −
+            </button>
 
-                    <button class="button calc-btn" onclick="pressCalc('7')">7</button>
-                    <button class="button calc-btn" onclick="pressCalc('8')">8</button>
-                    <button class="button calc-btn" onclick="pressCalc('9')">9</button>
-                    <button class="button calc-btn calc-btn-op" onclick="pressCalc('*')">×</button>
+            <button class="button calc-btn" onclick="pressCalc('1')">1</button>
+            <button class="button calc-btn" onclick="pressCalc('2')">2</button>
+            <button class="button calc-btn" onclick="pressCalc('3')">3</button>
+            <button
+              class="button calc-btn calc-btn-op"
+              onclick="pressCalc('+')"
+            >
+              +
+            </button>
 
-                    <button class="button calc-btn" onclick="pressCalc('4')">4</button>
-                    <button class="button calc-btn" onclick="pressCalc('5')">5</button>
-                    <button class="button calc-btn" onclick="pressCalc('6')">6</button>
-                    <button class="button calc-btn calc-btn-op" onclick="pressCalc('-')">−</button>
+            <button
+              class="button calc-btn calc-btn-zero"
+              onclick="pressCalc('0')"
+            >
+              0
+            </button>
+            <button class="button calc-btn" onclick="pressCalc('.')">.</button>
+            <button
+              class="button calc-btn calc-btn-equals"
+              onclick="calculateResult()"
+            >
+              =
+            </button>
+          </div>
+        </div>
+      </section>
 
-                    <button class="button calc-btn" onclick="pressCalc('1')">1</button>
-                    <button class="button calc-btn" onclick="pressCalc('2')">2</button>
-                    <button class="button calc-btn" onclick="pressCalc('3')">3</button>
-                    <button class="button calc-btn calc-btn-op" onclick="pressCalc('+')">+</button>
-
-                    <button class="button calc-btn calc-btn-zero" onclick="pressCalc('0')">0</button>
-                    <button class="button calc-btn" onclick="pressCalc('.')">.</button>
-                    <button class="button calc-btn calc-btn-equals" onclick="calculateResult()">=</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="gallery" class="window window-gallery" style="display: none; top: calc(50% - 220px); left: calc(50% - 280px);" data-app="gallery">
-
-    <div id="galleryheader" class="windowheader">
-        <div class="window-controls">
+      <section
+        id="gallery"
+        class="window window-gallery"
+        style="display: none; top: calc(50% - 220px); left: calc(50% - 280px)"
+        data-app="gallery"
+      >
+        <div id="galleryheader" class="windowheader">
+          <div class="window-controls">
             <span id="galleryclose" class="control-button close"></span>
             <span class="control-button minimize"></span>
             <span class="control-button zoom"></span>
+          </div>
+
+          <div class="window-title">Gallery</div>
         </div>
 
-        <div class="window-title">Gallery</div>
-    </div>
+        <div class="gallery-body">
+          <div id="galleryGrid" class="gallery-grid"></div>
+        </div>
+      </section>
 
-    <div class="gallery-body">
-        <div id="galleryGrid" class="gallery-grid"></div>
-    </div>
-        </section>
-
-        <section id="music" class="window window-music">
-
-    <div id="musicheader" class="windowheader">
-        <div class="window-controls">
+      <section id="music" class="window window-music">
+        <div id="musicheader" class="windowheader">
+          <div class="window-controls">
             <span id="musicclose" class="control-button close"></span>
             <span class="control-button minimize"></span>
             <span class="control-button zoom"></span>
+          </div>
+          <div class="window-title">Music</div>
         </div>
-        <div class="window-title">Music</div>
-    </div>
-    <div class="music-body">
-        <div class="music-player">
+        <div class="music-body">
+          <div class="music-player">
             <div class="music-artwork">
-                <img
-                    id="musicArt"
-                    src="images/icons/music.svg"
-                    alt="Album Artwork">
+              <img
+                id="musicArt"
+                src="images/icons/music.svg"
+                alt="Album Artwork"
+              />
             </div>
             <div class="music-info">
-                <div id="musicName" class="music-title">
-                    No Song Playing
-                </div>
-                <div id="musicArtist" class="music-artist">
-                    Select a song
-                </div>
+              <div id="musicName" class="music-title">No Song Playing</div>
+              <div id="musicArtist" class="music-artist">Select a song</div>
             </div>
             <div class="music-progress">
-                <span id="musicTime">0:00</span>
-                <input
-                    type="range"
-                    id="musicProgress"
-                    min="0"
-                    max="100"
-                    value="0">
-                <span id="musicDur">0:00</span>
+              <span id="musicTime">0:00</span>
+              <input
+                type="range"
+                id="musicProgress"
+                min="0"
+                max="100"
+                value="0"
+              />
+              <span id="musicDur">0:00</span>
             </div>
             <div class="music-controls">
-                <button
-                    id="musicPrev"
-                    class="music-control-button">
-                    |
-                </button>
-                <button
-                    id="musicPlay"
-                    class="music-control-button music-play-button">
-                    ▶
-                </button>
-                <button
-                    id="musicNext"
-                    class="music-control-button">
-                    |
-                </button>
+              <button id="musicPrev" class="music-control-button">|</button>
+              <button
+                id="musicPlay"
+                class="music-control-button music-play-button"
+              >
+                ▶
+              </button>
+              <button id="musicNext" class="music-control-button">|</button>
             </div>
+          </div>
+          <div class="music-playlist">
+            <div class="music-playlist-title">Playlist</div>
+            <div id="musicPlaylist" class="music-playlist-list"></div>
+          </div>
         </div>
-        <div class="music-playlist">
-            <div class="music-playlist-title">
-                Playlist
-            </div>
-            <div
-                id="musicPlaylist"
-                class="music-playlist-list">
-            </div>
+        <audio id="musicAudio"></audio>
+      </section>
+      <section id="vid" class="window window-vid">
+        <div id="vid-header" class="windowheader">
+          <div class="window-controls">
+            <span id="vidClose" class="control-button close"></span>
+            <span class="control-button minimize"></span>
+            <span class="control-button zoom"></span>
+          </div>
+          <div class="window-title">PikoTok</div>
         </div>
-    </div>
-    <audio id="musicAudio"></audio>
-</section>
-        
+        <div class="vid-body">
+          <div id="vidFeed" class="vid-feed"></div>
+          <button id="vidMute" class="vidMuteBtn"></button>
+        </div>
+      </section>
 
-        <section id="browser" class="window window-browser" data-app="browser">
-            <div id="browserheader" class="windowheader">
-                <div class="window-controls">
-                    <span id="browserclose" class="control-button close"></span>
-                    <span class="control-button minimize"></span>
-                    <span class="control-button zoom"></span>
-                </div>
-                <div class="window-title">Browser</div>
-            </div>
-            
-                <iframe
-                class="browser-frame"
-                src="https://www.google.com/search?igu=1"
-                title="Google">
-            </iframe>
-            </div>
-        </section>
-        
-    <section id="settings" class="window window-settings" style="display:none; top:calc(50% - 180px); left:calc(50% - 240px);" data-app="settings">
+      <section id="browser" class="window window-browser" data-app="browser">
+        <div id="browserheader" class="windowheader">
+          <div class="window-controls">
+            <span id="browserclose" class="control-button close"></span>
+            <span class="control-button minimize"></span>
+            <span class="control-button zoom"></span>
+          </div>
+          <div class="window-title">Browser</div>
+        </div>
 
-    <div id="settingsheader" class="windowheader">
-        <div class="window-controls">
+        <iframe
+          class="browser-frame"
+          src="https://www.google.com/search?igu=1"
+          title="Google"
+        >
+        </iframe>
+      </section>
+
+      <section
+        id="settings"
+        class="window window-settings"
+        style="display: none; top: calc(50% - 180px); left: calc(50% - 240px)"
+        data-app="settings"
+      >
+        <div id="settingsheader" class="windowheader">
+          <div class="window-controls">
             <span id="settingsclose" class="control-button close"></span>
             <span class="control-button minimize"></span>
             <span class="control-button zoom"></span>
+          </div>
+
+          <div class="window-title">Settings</div>
         </div>
 
-        <div class="window-title">Settings</div>
-    </div>
+        <div class="settings-body">
+          <h2>Appearance</h2>
 
-    <div class="panel settings-body">
-
-        <h2>Appearance</h2>
-
-        <div class="settings-group">
+          <div class="settings-group">
             <div class="settings-label">Theme</div>
             <div class="theme-options">
-                <button class="theme-option active" data-theme="default">
-                    <span class="theme-preview theme-preview-default"></span>
-                    <span>Default</span>
-                </button>
+              <button class="theme-option active" data-theme="default">
+                <span class="theme-preview theme-preview-default"></span>
+                <span>Default</span>
+              </button>
 
-                <button class="theme-option" data-theme="pink">
+              <button class="theme-option" data-theme="pink">
                 <span class="theme-preview theme-preview-pink"></span>
                 <span>Pink</span>
-                </button>
+              </button>
 
-                <button class="theme-option" data-theme="lavender">
-                    <span class="theme-preview theme-preview-lavender"></span>
-                    <span>Lavender</span>
-                </button>
+              <button class="theme-option" data-theme="lavender">
+                <span class="theme-preview theme-preview-lavender"></span>
+                <span>Lavender</span>
+              </button>
 
-                <button class="theme-option" data-theme="luca">
-                    <span class="theme-preview theme-preview-luca"></span>
-                    <span>Luca</span>
-                </button>
+              <button class="theme-option" data-theme="luca">
+                <span class="theme-preview theme-preview-luca"></span>
+                <span>Luca</span>
+              </button>
 
-                <button class="theme-option" data-theme="mint">
-                    <span class="theme-preview theme-preview-mint"></span>
-                    <span>Mint</span>
-                </button>
+              <button class="theme-option" data-theme="mint">
+                <span class="theme-preview theme-preview-mint"></span>
+                <span>Mint</span>
+              </button>
 
-                <button class="theme-option" data-theme="sky">
-                    <span class="theme-preview theme-preview-sky"></span>
-                    <span>Sky</span>
-                </button>
+              <button class="theme-option" data-theme="sky">
+                <span class="theme-preview theme-preview-sky"></span>
+                <span>Sky</span>
+              </button>
             </div>
-        </div>
+          </div>
 
-        <div class="settings-group wallpaper-group">
+          <div class="settings-group wallpaper-group">
             <div class="settings-label">Wallpaper</div>
             <div class="wallpaper-options">
-                <button class="wallpaper-option active"
+              <button
+                class="wallpaper-option active"
                 data-wallpaper="wall0"
-                title="default">
-            <img src="images/wallpaper/wall0.png"></button>
+                title="default"
+              >
+                <img src="images/wallpaper/wall0.png" />
+              </button>
 
-            <button class="wallpaper-option"
-            data-wallpaper="wall1"
-            title="pink">
-        <img src="images/wallpaper/wall1.png"></button>
+              <button
+                class="wallpaper-option"
+                data-wallpaper="wall1"
+                title="pink"
+              >
+                <img src="images/wallpaper/wall1.png" />
+              </button>
 
-        <button class="wallpaper-option"
-        data-wallpaper="wall2"
-        title="lavender">
-    <img src="images/wallpaper/wall2.jpg"></button>
+              <button
+                class="wallpaper-option"
+                data-wallpaper="wall2"
+                title="lavender"
+              >
+                <img src="images/wallpaper/wall2.jpg" />
+              </button>
 
-    <button class="wallpaper-option"
-    data-wallpaper="wall3"
-    title="luca">
-<img src="images/wallpaper/wall3.png"></button>
+              <button
+                class="wallpaper-option"
+                data-wallpaper="wall3"
+                title="luca"
+              >
+                <img src="images/wallpaper/wall3.png" />
+              </button>
 
-<button class="wallpaper-option"
-data-wallpaper="wall4"
-title="mint">
-<img src="images/wallpaper/wall4.jpg"></button>
+              <button
+                class="wallpaper-option"
+                data-wallpaper="wall4"
+                title="mint"
+              >
+                <img src="images/wallpaper/wall4.jpg" />
+              </button>
 
-<button class="wallpaper-option"
-data-wallpaper="wall5"
-title="sky">
-<img src="images/wallpaper/wall5.png"></button>
+              <button
+                class="wallpaper-option"
+                data-wallpaper="wall5"
+                title="sky"
+              >
+                <img src="images/wallpaper/wall5.png" />
+              </button>
             </div>
+          </div>
         </div>
-    </div>
+      </section>
 
-</section>
-
-<section id="todo" class="window window-todo" style="display:none; top:calc(50% - 200px); left:calc(50% - 240px);" data-app="todo">
-
-    <div id="todoheader" class="windowheader">
-        <div class="window-controls">
+      <section
+        id="todo"
+        class="window window-todo"
+        style="display: none; top: calc(50% - 200px); left: calc(50% - 240px)"
+        data-app="todo"
+      >
+        <div id="todoheader" class="windowheader">
+          <div class="window-controls">
             <span id="todoclose" class="control-button close"></span>
             <span class="control-button minimize"></span>
             <span class="control-button zoom"></span>
+          </div>
+
+          <div class="window-title">To-do</div>
         </div>
 
-        <div class="window-title">To-do</div>
-    </div>
-
-    <div class="panel todo-body">
-
-        <div class="todo-input-row">
-            <input id="todoInput" type="text" placeholder="Add a task..." class="input">
+        <div class="todo-body">
+          <div class="todo-input-row">
+            <input
+              id="todoInput"
+              type="text"
+              placeholder="Add a task..."
+              class="input"
+            />
             <button class="button" data-action="add-todo">Add</button>
+          </div>
+
+          <div id="todoList"></div>
         </div>
+      </section>
 
-        <div id="todoList"></div>
-
-    </div>
-
-</section>
-
-<section id="about" class="window window-about" style="display:none; top:calc(50% - 180px); left:calc(50% - 240px);" data-app="about">
-
-    <div id="aboutheader" class="windowheader">
-        <div class="window-controls">
+      <section
+        id="about"
+        class="window window-about"
+        style="display: none; top: calc(50% - 180px); left: calc(50% - 240px)"
+        data-app="about"
+      >
+        <div id="aboutheader" class="windowheader">
+          <div class="window-controls">
             <span id="aboutclose" class="control-button close"></span>
             <span class="control-button minimize"></span>
             <span class="control-button zoom"></span>
+          </div>
+
+          <div class="window-title">About</div>
         </div>
 
-        <div class="window-title">About</div>
-    </div>
+        <div class="panel about-body">
+          <h2>Piko</h2>
 
-    <div class="panel about-body">
+          <p>Version 1.0</p>
 
-        <h2>Piko</h2>
+          <p>Cozy</p>
 
-        <p>Version 1.0</p>
+          <p>Created by Element</p>
+        </div>
+      </section>
 
-        <p>Cozy</p>
-
-        <p>Created by Element</p>
-
-    </div>
-
-</section>
-
-
-        <div id="welcome" class="window window-welcome" style="display: none; top: calc(50% - 130px); left: calc(50% - 150px);">
-            <div id="welcomeheader" class="windowheader">
-                <div class="window-controls">
-                    <span id="welcomeclose" class="control-button close"></span>
-                    <span class="control-button minimize"></span>
-                    <span class="control-button zoom"></span>
-                </div>
-                <div class="window-title">Piko</div>
-            </div>
-
-            <div class="welcome-body">
-                    <img src="images/Rukia.jpg" width="84" height="84" class="welcome-avatar" alt="Piko mascot">
-                    <h1 class="welcome-title">Piko</h1>
-                    <p class="welcome-text">
-    To live is to suffer, to survive is to find<br>
-    some meaning in the suffering.
-</p>
-                </div>
+      <div
+        id="welcome"
+        class="window window-welcome"
+        style="display: none; top: calc(50% - 130px); left: calc(50% - 150px)"
+      >
+        <div id="welcomeheader" class="windowheader">
+          <div class="window-controls">
+            <span id="welcomeclose" class="control-button close"></span>
+            <span class="control-button minimize"></span>
+            <span class="control-button zoom"></span>
+          </div>
+          <div class="window-title">Piko</div>
         </div>
 
-        <ul id="desktopContextMenu" role="menu">
-            <li data-action="refresh" role="menuitem">Refresh</li>
-            <li class="context-divider" role="separator"></li>
-            <li data-action="new-note" role="menuitem">New Note</li>
-            <li data-action="todo" role="menuitem">To-do</li>
-            <li class="context-divider" role="separator"></li>
-            <li data-action="settings" role="menuitem">Settings</li>
-            <li class="context-divider" role="separator"></li>
-            <li data-action="about" role="menuitem">About Piko</li>
-        </ul>
-        <div id="dock" class="dock" aria-label="Dock"></div>
+        <div class="welcome-body">
+          <img
+            src="images/Rukia.jpg"
+            width="84"
+            height="84"
+            class="welcome-avatar"
+            alt="Piko mascot"
+          />
+          <h1 class="welcome-title">Piko</h1>
+          <p class="welcome-text">
+            To live is to suffer, to survive is to find<br />
+            some meaning in the suffering.
+          </p>
+        </div>
+      </div>
 
-        <div id="notificationContainer"></div>
+      <ul id="desktopContextMenu" role="menu">
+        <li data-action="refresh" role="menuitem">Refresh</li>
+        <li class="context-divider" role="separator"></li>
+        <li data-action="new-note" role="menuitem">New Note</li>
+        <li data-action="todo" role="menuitem">To-do</li>
+        <li class="context-divider" role="separator"></li>
+        <li data-action="settings" role="menuitem">Settings</li>
+        <li class="context-divider" role="separator"></li>
+        <li data-action="about" role="menuitem">About Piko</li>
+      </ul>
+      <div id="dock" class="dock" aria-label="Dock"></div>
+
+      <div id="notificationContainer"></div>
     </div>
 
-<script type="module" src="js/main.js"></script>
-</body>
+    <script type="module" src="js/main.js"></script>
+  </body>
 </html>

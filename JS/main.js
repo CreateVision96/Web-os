@@ -21,6 +21,7 @@ import {
 import { renderGallery } from "./gallery.js";
 import { initTodo, renderTodoList, renderTodoWidget } from "./todo.js";
 import { initMusic } from "./music.js";
+import { initVid } from "./pikotok.js";
 
 Object.assign(window, {
   addNewNote,
@@ -48,6 +49,7 @@ function init() {
   initTodo();
   initDesktopContextMenu();
   initMusic();
+  initVid();
 }
 
 init();

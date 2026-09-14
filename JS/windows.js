@@ -1,3 +1,5 @@
+import { stopMusicPlayback } from "./music.js";
+
 let biggestIndex = 10;
 let selectedIcon;
 
@@ -179,6 +181,10 @@ function openWindow(element) {
 function closeWindow(element) {
   if (!element) return;
   if (element.style.display === "none") return;
+
+  if (element.id === "music") {
+    stopMusicPlayback();
+  }
 
   element.classList.remove("is-open");
   element.classList.add("is-closing");

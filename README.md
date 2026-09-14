@@ -1,4 +1,14 @@
-# Remade
+Now that i have done other projects and gained more knowledge lemme finish this
+
+# Latest changes
+
+- added music player with 20 songs
+- seperated the js files
+- fixed some bugs
+-
+
+## Remade
+
 Huge changes from last time
 
 Changed the Os name from MentOs to Piko OS (just call it Piko)
@@ -8,7 +18,8 @@ Changed the Os name from MentOs to Piko OS (just call it Piko)
 previously i was trying to remake the minimalism and glass effect of MacOS but now
 ive changed to a pastel (cutesy) aesthetic theme.
 
-# NEW CHANGES 
+## NEW CHANGES
+
 - added 5 themes
 - right click menu
 - about window
@@ -19,12 +30,16 @@ ive changed to a pastel (cutesy) aesthetic theme.
 - added 5 more wallpapers that goes with the themes
 - made some adjustments that makes somethings feel just right
 - added a browser you can use google in it :D
+- added a music player
 
-## Use of AI 
+## Use of AI
+
 AI was only used as a learning and development assistant throughout the project.
 AI was also used to explain code and concepts so i could better understand and implement changes myself
+And the use of AI is under the limit
 
 ### FUTUREEEEEE
+
 i want to add a music app and an app to doomscroll
 
 check out at:

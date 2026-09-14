@@ -28,6 +28,12 @@ const appRegistry = [
     windowId: "music",
   },
   {
+    id: "vid",
+    label: "PikoTok",
+    icon: "images/icons/vid.svg",
+    windowId: "vid",
+  },
+  {
     id: "browser",
     label: "Browser",
     icon: "images/icons/browser.svg",
@@ -61,8 +67,8 @@ export function renderDock() {
     item.dataset.windowId = app.windowId;
 
     item.innerHTML = `
-      <img src="${app.icon}" class="dock-icon-image" alt="${app.label}">
-    `;
+  <img src="${app.icon}" class="dock-iconImage" alt="${app.label}">
+`;
 
     item.addEventListener("click", function () {
       const targetWindow = document.querySelector(`#${app.windowId}`);
