@@ -123,6 +123,10 @@ const musicData = [
 
 let currentSongIndex = 0;
 
+function resolveMusicAsset(path) {
+  return path.replace(/^music\//, "Music/");
+}
+
 const musicAudio = document.getElementById("musicAudio");
 const musicArt = document.getElementById("musicArt");
 const musicName = document.getElementById("musicName");
@@ -151,10 +155,10 @@ function loadSong(index, autoplay = false) {
 
   const song = musicData[index];
 
-  musicAudio.src = song.audio;
+  musicAudio.src = resolveMusicAsset(song.audio);
   musicName.textContent = song.title;
   musicArtist.textContent = song.artist;
-  musicArt.src = song.artwork;
+  musicArt.src = resolveMusicAsset(song.artwork);
 
   musicProgress.value = 0;
   musicTime.textContent = "0:00";
@@ -210,7 +214,7 @@ function renderPlaylist() {
 
     item.innerHTML = `
       <img
-        src="${song.artwork}"
+        src="${resolveMusicAsset(song.artwork)}"
         class="music-playlist-artwork"
         alt=""
       >
