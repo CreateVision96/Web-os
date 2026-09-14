@@ -36,20 +36,29 @@ Object.assign(window, {
 });
 
 function init() {
-  initThemeSettings();
   renderDock();
   renderCalendar();
-  initWeather();
   bindWindowControls();
   populateSidebar();
   setNotesContent(0);
   renderGallery();
   renderTodoList();
   renderTodoWidget();
-  initTodo();
   initDesktopContextMenu();
-  initMusic();
-  initVid();
+
+  [
+    initThemeSettings,
+    initWeather,
+    initTodo,
+    initMusic,
+    initVid,
+  ].forEach(function (initializer) {
+    try {
+      initializer();
+    } catch (error) {
+      console.error("Piko initializer failed:", error);
+    }
+  });
 }
 
 init();
