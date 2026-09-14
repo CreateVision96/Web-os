@@ -1,0 +1,230 @@
+.window-games {
+  width: 520px;
+  height: 520px;
+  min-width: 520px;
+  min-height: 520px;
+}
+
+.games-body {
+  position: relative;
+  height: calc(100% - 42px);
+  padding: 24px;
+  background: var(--surface);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.game-card {
+  min-height: 150px;
+  border: 2px solid var(--border-light);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+.game-card:hover {
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+}
+
+.game-icon {
+  font-size: 42px;
+}
+
+.game-name {
+  font-size: 15px;
+  font-weight: var(--font-weight-bold);
+}
+
+.game-hidden {
+  display: none !important;
+}
+
+.game-screen {
+  position: absolute;
+  inset: 24px;
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.game-screen.game-active {
+  display: flex;
+}
+
+.game-topbar {
+  width: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  font-weight: var(--font-weight-bold);
+}
+.game-topbar .button {
+  padding: 7px 12px;
+  font-size: 12px;
+}
+
+.game-controls {
+  width: 320px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.snake-screen {
+  align-items: center;
+}
+
+.snakeBoard {
+  width: 320px;
+  height: 320px;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(30, 1fr);
+  grid-template-rows: repeat(30, 1fr);
+  background: var(--text);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.snakeCell {
+  width: 100%;
+  height: 100%;
+}
+
+.snakeCell.snake {
+  background: var(--accent);
+  border-radius: 3px;
+}
+
+.snakeCell.food {
+  background: var(--text);
+  box-shadow: inset 0 0 0 4px var(--accent);
+  border-radius: 50%;
+}
+
+.snakeGameOver {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 220px;
+  padding: 24px;
+  text-align: center;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-medium);
+  color: var(--text);
+  font-size: 24px;
+  font-weight: var(--font-weight-bold);
+  z-index: 10;
+}
+
+.finalScore {
+  margin-top: 8px;
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.restartText {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-regular);
+}
+
+.memory-screen {
+  align-items: center;
+}
+
+.memory-screen .game-topbar {
+  justify-content: space-between;
+}
+
+.memoryBoard {
+  width: 320px;
+  height: 320px;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.memoryTile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border-light);
+  border-radius: 12px;
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: 28px;
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.memoryTile:hover {
+  background: var(--surface-hover);
+}
+
+.memoryTile.selected {
+  border-color: var(--accent);
+}
+
+.memoryTile.flipped {
+  background: var(--surface);
+  border-color: var(--accent);
+}
+
+.memoryWin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 220px;
+  padding: 24px;
+  text-align: center;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-medium);
+  color: var(--text);
+  font-size: 24px;
+  font-weight: var(--font-weight-bold);
+  z-index: 10;
+}
+
+.memoryFinalScore {
+  margin-top: 8px;
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.memoryRestartText {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-regular);
+}

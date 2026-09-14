@@ -1,8 +1,13 @@
 import { initThemeSettings } from "./theme.js";
+
 import { renderDock, initDesktopContextMenu } from "./desk.js";
+
 import { renderCalendar } from "./calendar.js";
+
 import { initWeather } from "./weather.js";
+
 import { bindWindowControls } from "./windows.js";
+
 import {
   addNewNote,
   deleteActiveNote,
@@ -11,6 +16,7 @@ import {
   updateActiveNoteContent,
   updateActiveNoteTitle,
 } from "./notes.js";
+
 import {
   backspaceCalc,
   calculateResult,
@@ -18,10 +24,16 @@ import {
   percentCalc,
   pressCalc,
 } from "./calculator.js";
+
 import { renderGallery } from "./gallery.js";
+
 import { initTodo, renderTodoList, renderTodoWidget } from "./todo.js";
+
 import { initMusic } from "./music.js";
-import { initVid } from "./pikotok.js";
+
+import { initVid } from "../js/pikotok.js";
+
+import { initGames } from "../js/games.js";
 
 Object.assign(window, {
   addNewNote,
@@ -52,6 +64,7 @@ function init() {
     initTodo,
     initMusic,
     initVid,
+    initGames,
   ].forEach(function (initializer) {
     try {
       initializer();

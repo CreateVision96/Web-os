@@ -5,7 +5,10 @@ Now that i have done other projects and gained more knowledge lemme finish this
 - added music player with 20 songs
 - seperated the js files
 - fixed some bugs
--
+- added a video player
+- pause, mute and it also shows the amount of videos
+- added games
+- two games, Snakes and Memory
 
 ## Remade
 

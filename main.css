@@ -461,10 +461,6 @@ body.wallpaper-changing::before {
   background: var(--accent-soft);
 }
 
-.weather-bg {
-  display: none;
-}
-
 .weather-content {
   position: relative;
   z-index: 1;
@@ -623,6 +619,7 @@ body.wallpaper-changing::before {
   justify-content: space-between;
   background: var(--surface-soft);
   border-bottom: 2px solid var(--border);
+  border-radius: var(--radius) var(--radius) 0 0;
   margin: 0;
 }
 

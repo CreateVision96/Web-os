@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Piko</title>
     <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="stylesheet" type="text/css" href="css/games.css" />
   </head>
 
   <body>
@@ -42,11 +43,6 @@
         </section>
 
         <section class="widget widget-weather">
-          <img
-            src="images/widget/weatherbg.jpg"
-            class="weather-bg"
-            alt="Weather Background"
-          />
           <div class="weather-content">
             <div class="weather-header">
               <div>
@@ -240,6 +236,37 @@
 
         <div class="gallery-body">
           <div id="galleryGrid" class="gallery-grid"></div>
+        </div>
+      </section>
+
+      <section
+        id="games"
+        class="window window-games"
+        style="display: none; top: calc(50% - 220px); left: calc(50% - 280px)"
+        data-app="games"
+      >
+        <div id="gamesheader" class="windowheader">
+          <div class="window-controls">
+            <span id="gamesclose" class="control-button close"></span>
+            <span class="control-button minimize"></span>
+            <span class="control-button zoom"></span>
+          </div>
+
+          <div class="window-title">Games</div>
+        </div>
+
+        <div class="games-body">
+          <div class="games-grid">
+            <button class="game-card" data-game="snake">
+              <span class="game-icon">🐍</span>
+              <span class="game-name">Snake</span>
+            </button>
+
+            <button class="game-card" data-game="memory">
+              <span class="game-icon">🧠</span>
+              <span class="game-name">Memory</span>
+            </button>
+          </div>
         </div>
       </section>
 
