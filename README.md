@@ -10,6 +10,7 @@ Now that i have done other projects and gained more knowledge lemme finish this
 - added games
 - two games, Snakes and Memory
 - fixed some more bugs
+- added Terminal, and some small animation adjustments
 
 ## Remade
 

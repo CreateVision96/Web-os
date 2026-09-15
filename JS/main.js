@@ -35,6 +35,8 @@ import { initVid } from "../js/pikotok.js";
 
 import { initGames } from "../js/games.js";
 
+import { initTerminal } from "../js/terminal.js";
+
 Object.assign(window, {
   addNewNote,
   deleteActiveNote,
