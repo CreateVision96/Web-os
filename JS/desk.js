@@ -57,6 +57,12 @@ const appRegistry = [
     icon: "images/icons/settings.svg",
     windowId: "settings",
   },
+  {
+    id: "terminal",
+    label: "Terminal",
+    icon: "images/icons/terminal.svg",
+    windowId: "terminal",
+  },
 ];
 
 export function renderDock() {
@@ -102,8 +108,32 @@ export function initDesktopContextMenu() {
     e.preventDefault();
 
     menu.style.display = "block";
-    menu.style.left = e.clientX + "px";
-    menu.style.top = e.clientY + "px";
+
+    const menuWidth = menu.offsetWidth;
+    const menuHeight = menu.offsetHeight;
+
+    let x = e.clientX;
+    let y = e.clientY;
+
+    if (x + menuWidth > window.innerWidth) {
+      x = window.innerWidth - menuWidth - 8;
+    }
+
+    if (y + menuHeight > window.innerHeight) {
+      y = window.innerHeight - menuHeight - 8;
+    }
+
+    x = Math.max(8, x);
+    y = Math.max(8, y);
+
+    menu.style.left = `${x}px`;
+    menu.style.top = `${y}px`;
+
+    menu.style.animation = "none";
+
+    requestAnimationFrame(function () {
+      menu.style.animation = "contextMenuIn 0.15s ease-out";
+    });
   });
 
   document.addEventListener("click", function () {

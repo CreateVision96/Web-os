@@ -20,6 +20,13 @@
   font-weight: 700;
 }
 
+@font-face {
+  font-family: "VT323";
+  src: url("fonts/VT323-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -765,6 +772,21 @@ body.wallpaper-changing::before {
   border-radius: 12px;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
   z-index: 10000;
+
+  transform-origin: top left;
+  animation: contextMenuIn 0.15s ease-out;
+}
+
+@keyframes contextMenuIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 #desktopContextMenu li {
@@ -834,4 +856,116 @@ body.wallpaper-changing::before {
 .notification-message {
   font-size: 13px;
   color: var(--text-secondary);
+}
+
+.window-terminal {
+  width: 680px;
+  height: 460px;
+  min-width: 520px;
+  min-height: 340px;
+  background: #111111;
+  border-color: #292929;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+}
+
+.window-terminal .windowheader {
+  background: #181818;
+  border-bottom-color: #292929;
+}
+
+.window-terminal .window-title {
+  color: #d6d6d6;
+}
+
+.window-terminal .control-button {
+  opacity: 0.9;
+}
+
+.terminal-body {
+  height: calc(100% - 42px);
+  display: flex;
+  flex-direction: column;
+  padding: 16px 18px;
+  background: #111111;
+  color: #d6d6d6;
+  overflow: hidden;
+}
+
+.terminal-output {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 2px 0 14px;
+  font-family: "VT323", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  user-select: text;
+  scrollbar-width: thin;
+  scrollbar-color: #3a3a3a transparent;
+}
+
+.terminal-output::-webkit-scrollbar {
+  width: 6px;
+}
+
+.terminal-output::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 10px;
+}
+
+.terminal-line {
+  min-height: 22px;
+}
+
+.terminal-command {
+  color: #eeeeee;
+}
+
+.terminal-response {
+  color: #a8a8a8;
+}
+
+.terminal-error {
+  color: #ff7777;
+}
+
+.terminal-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding-top: 10px;
+  border-top: 1px solid #292929;
+}
+
+.terminal-prompt {
+  flex-shrink: 0;
+  color: #7ee787;
+  font-family: "VT323", monospace;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.terminal-input {
+  flex: 1;
+  min-width: 0;
+  padding: 3px 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #eeeeee;
+  font-family: "VT323", monospace;
+  font-size: 14px;
+  user-select: text;
+  caret-color: #7ee787;
+}
+
+.terminal-input::selection {
+  background: #3a3a3a;
 }

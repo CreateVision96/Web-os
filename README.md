@@ -9,6 +9,7 @@ Now that i have done other projects and gained more knowledge lemme finish this
 - pause, mute and it also shows the amount of videos
 - added games
 - two games, Snakes and Memory
+- fixed some more bugs
 
 ## Remade
 

@@ -464,6 +464,36 @@
       </section>
 
       <section
+        id="terminal"
+        class="window window-terminal"
+        style="display: none; top: calc(50% - 220px); left: calc(50% - 320px)"
+        data-app="terminal"
+      >
+        <div id="terminalheader" class="windowheader">
+          <div class="window-controls">
+            <span id="terminalClose" class="control-button close"></span>
+            <span class="control-button minimize"></span>
+            <span class="control-button zoom"></span>
+          </div>
+          <div class="window-title">Terminal</div>
+        </div>
+        <div class="terminal-body">
+          <div id="terminalOutput" class="terminal-output"></div>
+          <div class="terminal-input-row">
+            <span class="terminal-prompt">user@piko:</span>
+            <input
+              id="terminalInput"
+              class="terminal-input"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              aria-label="Terminal command"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section
         id="todo"
         class="window window-todo"
         style="display: none; top: calc(50% - 200px); left: calc(50% - 240px)"
