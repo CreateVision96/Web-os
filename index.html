@@ -6,9 +6,28 @@
     <title>Piko</title>
     <link rel="stylesheet" type="text/css" href="main.css" />
     <link rel="stylesheet" type="text/css" href="css/games.css" />
+    <link rel="stylesheet" type="text/css" href="css/boott.css" />
   </head>
 
   <body>
+    <div id="bootScreen" class="boot-screen">
+      <div class="boot-content">
+        <div class="boot-logo">PIKO</div>
+
+        <div class="boot-version">WEB OS 1.0</div>
+
+        <div id="bootMessages" class="boot-messages"></div>
+
+        <div class="boot-progress-wrap">
+          <div class="boot-progress">
+            <div id="bootProgressBar" class="boot-progress-bar"></div>
+          </div>
+
+          <div id="bootProgressText" class="boot-progress-text">0%</div>
+        </div>
+      </div>
+
+    </div>
     <div class="desktop-shell">
       <div class="menubar">
         <div class="menubar-left">
@@ -596,6 +615,7 @@
       <div id="notificationContainer"></div>
     </div>
 
+    <script src="js/boot.js"></script>
     <script type="module" src="js/main.js"></script>
   </body>
 </html>
