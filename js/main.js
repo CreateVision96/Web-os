@@ -31,11 +31,11 @@ import { initTodo, renderTodoList, renderTodoWidget } from "./todo.js";
 
 import { initMusic } from "./music.js";
 
-import { initVid } from "../js/pikotok.js";
+import { initVid } from "./pikotok.js";
 
-import { initGames } from "../js/games.js";
+import { initGames } from "./games.js";
 
-import { initTerminal } from "../js/terminal.js";
+import { initTerminal } from "./terminal.js";
 
 Object.assign(window, {
   addNewNote,
