@@ -36,6 +36,12 @@ const musicData = [
     artwork: "music/Flatline.jpg",
   },
   {
+    title: "Given Up",
+    artist: "Linkin Park",
+    audio: "music/Given up - Linkin Park.mp3",
+    artwork: "music/Given_Up_Linkin_Park.jpg",
+  },
+  {
     title: "Heaven Can Wait",
     artist: "MJ",
     audio: "music/Heaven Can Wait - MJ.mp3",
