@@ -1,51 +1,35 @@
-Now that i have done other projects and gained more knowledge lemme finish this
+# Piko
 
-# Latest changes
+**Piko** is a web based operating system built using HTML, CSS, JavaScript. <br/>
 
-- added music player with 20 songs
-- seperated the js files
-- fixed some bugs
-- added a video player
-- pause, mute and it also shows the amount of videos
-- added games
-- two games, Snakes and Memory
-- fixed some more bugs
-- added Terminal, and some small animation adjustments
+This was the biggest project ive made till now, this helped me learn fundamentals. <br/>
 
-## Remade
+I have tried to make the theme kawaii like or cozy and made it look cutesy, (i genuinely dont know what else to write here) <br/>
 
-Huge changes from last time
+## Demo
 
-Changed the Os name from MentOs to Piko OS (just call it Piko)
+Here is the demo link : [Piko Os](https://createvision96.github.io/Web-os/)
 
-- changed the name, theme, whole vibe
+## Features
 
-previously i was trying to remake the minimalism and glass effect of MacOS but now
-ive changed to a pastel (cutesy) aesthetic theme.
+- A notes app with local storage
+- A calculater
+- A Gallery app
+- Two games
+- Music player (ik i have peak music taste)
+- Doomscroll app (even tho there isnt much to doomscroll)
+- A functioning brwoser
+- Todo App its connected to the Todo widget so the first three tasking you add in app will show in the widget
+- Settings where you can change wallpaper and theme that matches to the wallpapers
+- Terminal, Type help to see commands
+- the weather widget shows the weather in New York
+- A calendar widget
+- A boot screen
 
-## NEW CHANGES
-
-- added 5 themes
-- right click menu
-- about window
-- settings which can be used to change theme
-- instead of using the user's location the weather widget now shows weather in new york
-- added a todo widget and an app for it, the first 3 tasks made in app will show in the widget too (you can check the task in widget)
-- added a galery app
-- added 5 more wallpapers that goes with the themes
-- made some adjustments that makes somethings feel just right
-- added a browser you can use google in it :D
-- added a music player
+Making this project was fun and i learned alot, if i get enough stardance to get a 1tb nvme i'll try dual boot and make this look in linux but who knows
 
 ## Use of AI
 
-AI was only used as a learning and development assistant throughout the project.
-AI was also used to explain code and concepts so i could better understand and implement changes myself
-And the use of AI is under the limit
-
-### FUTUREEEEEE
-
-i want to add a music app and an app to doomscroll
-
-check out at:
-https://createvision96.github.io/Web-os/
+- AI was only used as a learning and development assistant throughout the project.
+- AI was also used to explain code and concepts so i could better understand and implement changes myself
+- And the use of AI is under the limit

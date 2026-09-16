@@ -3,6 +3,15 @@ const videoData = [
   "videos/eli0.ae.mp4",
   "videos/kaizen.k8.mp4",
   "videos/vid1.mp4",
+  "videos/crumleymemes.mp4",
+  "videos/mcaupybugs.mp4",
+  "videos/sebby.tv.mp4",
+  "videos/w1nter.amy.mp4",
+  "videos/ulqquiiorra.mp4",
+  "videos/acvinylcollection.mp4",
+  "videos/e.yrds.mp4",
+  "videos/beamngkyu.mp4",
+  "videos/cornschlawg.mp4",
 ];
 
 export function initVid() {
