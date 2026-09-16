@@ -1,5 +1,6 @@
 const videoData = [
   "videos/chaerxyy.mp4",
+  "videos/sonsahurr.mp4",
   "videos/eli0.ae.mp4",
   "videos/kaizen.k8.mp4",
   "videos/vid1.mp4",
